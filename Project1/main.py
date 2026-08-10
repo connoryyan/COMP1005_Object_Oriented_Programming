@@ -1,0 +1,102 @@
+from client import Client
+from account import Account
+from transaction import Transaction
+from branch import Branch
+
+if __name__ == "__main__":
+    client_1 = Client(1, "Connor Yan", True, "email", "connor.yan@student.adelaide.edu.au", 1)
+    client_2 = Client(2, "Tianyi Zhao", False, "email", "tianyi.zhao@student.adelaide.edu.au", 2)
+    client_3 = Client(3, "Leo Messi", True, "phone", "0400 123 456", 3)
+ 
+    account_1 = Account(1, "Savings")
+    account_2 = Account(2, "Checking")
+    account_3 = Account(3, "Savings")
+ 
+    account_1.balance = 500.0
+    account_2.balance = 1200.0
+    account_3.balance = 0.0
+ 
+    print("=" * 60)
+    print("Client information (using dot notation to access attributes)")
+    print("=" * 60)
+    print(f"Client 1 name: {client_1.name}")
+    print(f"Client 2 preferred contact: {client_2.preferred_contact}")
+    print(f"Client 3 is_active: {client_3.is_active}")
+ 
+    print()
+    print("=" * 60)
+    print("Calling client methods via dot notation")
+    print("=" * 60)
+    client_1.display_info()
+    client_2.change_preferred_contact("phone")
+    client_3.change_contact("leo.messi@example.com")
+ 
+    print()
+    print("=" * 60)
+    print("Account operations")
+    print("=" * 60)
+
+ 
+    print(f"Account 1 balance before deposit: ${account_1.balance}")
+    account_1.deposit(250.0)
+    print(f"Account 1 balance after deposit: ${account_1.balance}")
+ 
+    print()
+ 
+
+    print(f"Account 2 balance before deposit: ${account_2.balance}")
+    account_2.deposit(300.0)
+    print(f"Account 2 balance after deposit: ${account_2.balance}")
+ 
+    print()
+ 
+
+    print(f"Account 1 balance before withdrawal: ${account_1.balance}")
+    account_1.withdrawal(400.0)
+    print(f"Account 1 balance after withdrawal: ${account_1.balance}")
+ 
+    print()
+ 
+
+    print(f"Account 3 balance before withdrawal: ${account_3.balance}")
+    account_3.withdrawal(100.0)
+    print(f"Account 3 balance after withdrawal: ${account_3.balance}")
+ 
+    print()
+ 
+
+    print(f"Account 3 balance before over-withdrawal attempt: ${account_3.balance}")
+    account_3.withdrawal(9999.0)
+    print(f"Account 3 balance after over-withdrawal attempt: ${account_3.balance}")
+ 
+    print()
+    print("=" * 60)
+    print("Confirming object independence")
+    print("=" * 60)
+ 
+
+    print(f"Before change -> client_1: {client_1.name}, client_2: {client_2.name}")
+    client_1.change_name("Connor Y.")
+    print(f"After change  -> client_1: {client_1.name}, client_2: {client_2.name}")
+ 
+
+    print(f"Before change -> account_1: ${account_1.balance}, account_2: ${account_2.balance}")
+    account_1.deposit(50.0)
+    print(f"After change  -> account_1: ${account_1.balance}, account_2: ${account_2.balance}")
+
+    transaction_1 = Transaction(1, "n", 100.0, "Hello")
+    transaction_2 = Transaction(2, "d", 120.0, "Hello")
+
+    transaction_1.process()
+    transaction_2.cancel()
+
+    print(transaction_1)
+    print(transaction_2)
+
+    branch_1 = Branch(1, "www", "Firle", "12343232", True)
+    branch_2 = Branch(2, "ddd", "Norwood", "2141242")
+
+    branch_2.open()
+
+    print(branch_1)
+    print(branch_2)
