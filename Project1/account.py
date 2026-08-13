@@ -58,7 +58,7 @@ class Account:
 
         if amount > self.balance:
             print("[INFO] Withdrawal failed. Insufficient balance.")
-            return False
+            return False # can_afford()
 
         self.balance -= amount
         print("[INFO] Withdrawal successful.")
