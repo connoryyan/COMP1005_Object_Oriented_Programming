@@ -8,7 +8,7 @@ class Account:
         balance (float): account balance
     '''
 
-    def __init__(self, id:int, typ:str):
+    def __init__(self, id: int, typ: str):
         '''
         Initialization
 
@@ -31,7 +31,17 @@ class Account:
     Type: {self.type}
     Balance: {self.balance}'''
 
-    def deposit(self, amount:float):
+    def __repr__(self) -> str:
+        '''
+        Display the information associated with the account
+
+        Returns:
+            str: A string containing the account's information.
+        '''
+        return f"Account(id = {self.id}, type = {self.type}, \
+balance = {self.balance})"
+
+    def deposit(self, amount: float):
         '''
         Add an amount to the account balance
 
@@ -45,7 +55,7 @@ class Account:
         self.balance += amount
         print("[INFO] Deposit successful.")
 
-    def withdrawal(self, amount:float):
+    def withdrawal(self, amount: float):
         '''
         Take an amount out of the account balance
 
@@ -58,7 +68,7 @@ class Account:
 
         if amount > self.balance:
             print("[INFO] Withdrawal failed. Insufficient balance.")
-            return False # can_afford()
+            return False  # can_afford()
 
         self.balance -= amount
         print("[INFO] Withdrawal successful.")
@@ -75,8 +85,3 @@ class Account:
             None
         '''
         print(f"The balance of Account {self.id} is ${self.balance}.")
-
-
-
-
-        

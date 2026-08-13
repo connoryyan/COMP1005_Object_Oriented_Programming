@@ -9,7 +9,15 @@ class Branch:
         phone (str):  Phone number
         is_open (bool): Whether the branch is currently open.
     '''
-    def __init__(self, id:int, name:str, location:str, phone:str, is_open=False):
+
+    def __init__(
+            self,
+            id: int,
+            name: str,
+            location: str,
+            phone: str,
+            is_open=False
+    ):
         '''
         Initialization
 
@@ -39,6 +47,17 @@ class Branch:
     Phone No.: {self.phone}
     State: {"Open" if self.is_open else "Close"}'''
 
+    def __repr__(self) -> str:
+        '''
+        Display the information associated with the branch
+
+        Returns:
+            str: A string containing the branch's information.
+        '''
+        return f"Branch(id = {self.id}, name = {self.name}, \
+location = {self.location}, phone = {self.phone}, \
+is_open = {self.is_open})"
+
     def open(self):
         '''
         Set the branch open
@@ -51,7 +70,7 @@ class Branch:
         '''
         self.is_open = False
 
-    def update_phone(self, phone:str):
+    def update_phone(self, phone: str):
         '''
         Update phone number
 

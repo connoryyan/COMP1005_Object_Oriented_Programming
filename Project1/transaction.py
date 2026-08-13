@@ -12,7 +12,8 @@ class Transaction:
         description (str):  Transaction description
         status (str): Transaction status
     '''
-    def __init__(self, id:int, typ:str, amount:float, description:str):
+
+    def __init__(self, id: int, typ: str, amount: float, description: str):
         '''
         Initialization
 
@@ -28,6 +29,29 @@ class Transaction:
         self.description = description
         self.status = "Pending"
 
+    def __str__(self):
+        '''
+        Display the information associated with the transaction
+
+        Returns:
+            str: A string containing the account's transaction.
+        '''
+        return f'''Information of Transaction #{self.id}
+    Type: {self.type}
+    Amount: ${self.amount}
+    Description: {self.description}
+    Status: {self.status}'''
+
+    def __repr__(self):
+        '''
+        Display the information associated with the transaction
+
+        Returns:
+            str: A string containing the account's transaction.
+        '''
+        return f"Transaction(id = {self.id}, type = {self.type}, \
+description = {self.description}, status = {self.status})"
+
     def process(self) -> bool:
         '''
         Allow a pending transaction to be processed
@@ -42,7 +66,7 @@ class Transaction:
         if self.status == "Cancelled":
             print("[INFO] The transaction cannot be completed.")
             return False
-        
+
         # res = account1.withdrawal(self.amount)
         # if not res:
         #     print("[INFO] The transaction cannot be completed.")
@@ -60,7 +84,7 @@ class Transaction:
         self.status = "Cancelled"
         print("[INFO] Transaction cancelled.")
 
-    def update_description(self, description:str):
+    def update_description(self, description: str):
         '''
         Update transaction description
 
@@ -68,19 +92,6 @@ class Transaction:
             description (str): new transaction description
         '''
         self.description = description
-
-    def __str__(self):
-        '''
-        Display the information associated with the transaction
-
-        Returns:
-            str: A string containing the account's transaction.
-        '''
-        return  f'''Information of Transaction #{self.id}
-    Type: {self.type}
-    Amount: ${self.amount}
-    Description: {self.description}
-    Status: {self.status}'''
 
 
 if __name__ == "__main__":
@@ -92,5 +103,3 @@ if __name__ == "__main__":
 
     print(transaction_1)
     print(transaction_2)
-
-    

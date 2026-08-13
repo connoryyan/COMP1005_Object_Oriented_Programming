@@ -12,7 +12,15 @@ class Client:
         contact (str): Client contact
         account_id (str):  Identifier of client's account
     '''
-    def __init__(self, id:int, name:str, is_active:bool, preferred_contact:str, contact:str, account_id:int):
+
+    def __init__(
+            self, id: int,
+            name: str,
+            is_active: bool,
+            preferred_contact: str,
+            contact: str,
+            account_id: int
+    ):
         '''
         Initialization
 
@@ -45,6 +53,18 @@ class Client:
     Contact: {self.contact}
     Account ID: {self.account_id}'''
 
+    def __repr__(self) -> str:
+        '''
+        Display the information associated with the client
+
+        Returns:
+            str: A string containing the client's information.
+        '''
+        return f"Client(id = {self.id}, name = {self.name}, \
+is_active = {self.is_active}, \
+preferred_contact = {self.preferred_contact}, \
+contact = {self.contact}, account_id = {self.account_id})"
+
     # def display_info(self):
     #     '''
     #     Display the information associated with the client
@@ -62,7 +82,7 @@ class Client:
     #     print(f"    Contact: {self.contact}")
     #     print(f"    Account ID: {self.account_id}")
 
-    def change_name(self, name:str):
+    def change_name(self, name: str):
         '''
         Change client's name
 
@@ -74,33 +94,35 @@ class Client:
         '''
         self.name = name
 
-    def change_preferred_contact(self, preferred_contact:str):
+    def change_preferred_contact(self, preferred_contact: str):
         '''
         Change Client's contact information
 
         Args:
             preferred_contact (str): client's new preferred contact method
-        
+
         Returns:
             None
         '''
         self.preferred_contact = preferred_contact
-        print(f"[INFO] {self.name}'s preferred contact method has been changed to {self.preferred_contact}.")
+        print(f"[INFO] {self.name}'s preferred contact method has been " 
+            + f"changed to {self.preferred_contact}.")
 
-    def change_contact(self, contact:str):
+    def change_contact(self, contact: str):
         '''
         Change Client's contact information
 
         Args:
             contact (str): client's new contact information
-        
+
         Returns:
             None
         '''
         self.contact = contact
-        print(f"[INFO] {self.name}'s contact information has been changed to {self.contact}.")
+        print(f"[INFO] {self.name}'s contact information has been changed "
+            + f"to {self.contact}.")
 
-    def change_is_active(self, is_active:bool):
+    def change_is_active(self, is_active: bool):
         '''
         Change the value of self.is_active
 
@@ -111,9 +133,5 @@ class Client:
             None
         '''
         self.is_active = is_active
-        print(f"[INFO] {self.name}'s has been recorded as {'active' if self.is_active else 'inactive'}.")
-
-
-
-
-        
+        print(f"[INFO] {self.name}'s has been recorded as \
+              {'active' if self.is_active else 'inactive'}.")
