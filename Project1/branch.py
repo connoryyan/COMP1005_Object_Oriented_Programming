@@ -28,11 +28,11 @@ class Branch:
             phone (str):  Phone number
             is_open (bool): Whether the branch is currently open.
         '''
-        self.id = id
-        self.name = name
-        self.location = location
-        self.phone = phone
-        self.is_open = is_open
+        if isinstance(id, int): self.id = id
+        if isinstance(name, str): self.name = name
+        if isinstance(location, str): self.location = location
+        if isinstance(phone, str): self.phone = phone
+        if is_open in [True, False]: self.is_open = is_open
 
     def __str__(self) -> str:
         '''
@@ -70,14 +70,14 @@ is_open = {self.is_open})"
         '''
         self.is_open = False
 
-    def update_phone(self, phone: str):
+    def set_phone(self, phone: str):
         '''
         Update phone number
 
         Args:
             phone (str): new branch phone number
         '''
-        self.phone = phone
+        if isinstance(phone, str): self.phone = phone
 
 
 if __name__ == "__main__":

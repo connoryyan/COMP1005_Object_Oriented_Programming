@@ -1,0 +1,63 @@
+classDiagram
+    direction TB
+
+    class Client {
+        +id : int
+        +name : str
+        -__is_active : bool
+        -__preferred_contact : str
+        -__contact : str
+        -__account_id : int
+        +__str__() -> str
+        +__repr__() -> str
+        +set_name(name : str)
+        +get_preferred_contact() -> str
+        +change_preferred_contact(preferred_contact : str)
+        +get_contact() -> str
+        +change_contact(contact : str)
+        +get_is_active() -> bool
+        +change_is_active(is_active : bool)
+    }
+
+    class Account {
+        +id : int
+        -__type : str
+        -__balance : float
+        +__str__() -> str
+        +__repr__() -> str
+        +get_type() -> str
+        +get_balance() -> float
+        +deposit(amount : float)
+        +withdrawal(amount : float)
+        +display_balance()
+    }
+
+    class Transaction {
+        +id : int
+        -__type : str
+        -__amount : float
+        -__description : str
+        +status : str
+        +__str__() -> str
+        +__repr__() -> str
+        +get_type() -> str
+        +get_amount() -> float
+        +process() -> bool
+        +cancel()
+        +get_description() -> str
+        +set_description(description : str)
+    }
+
+    class Branch {
+        +id : int
+        +name : str
+        +location : str
+        +phone : str
+        +is_open : bool
+        +__str__() -> str
+        +__repr__() -> str
+        +open()
+        +close()
+        +set_phone(phone : str)
+    }
+

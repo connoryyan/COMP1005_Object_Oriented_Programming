@@ -4,8 +4,8 @@ class Account:
 
     Attributes:
         id (int): account identifier
-        type (str): account type
-        balance (float): account balance
+        __type (str): account type
+        __balance (float): account balance
     '''
 
     def __init__(self, id: int, typ: str):
@@ -16,9 +16,9 @@ class Account:
             id (int): account identifier
             typ (str): account type
         '''
-        self.id = id
-        self.type = typ
-        self.balance = 0.0
+        if isinstance(id, int): self.id = id
+        if isinstance(typ, str): self.__type = typ
+        self.__balance = 0.0
 
     def __str__(self) -> str:
         '''
@@ -27,9 +27,7 @@ class Account:
         Returns:
             str: A string containing the account's information.
         '''
-        return f'''Information of Account #{self.id}
-    Type: {self.type}
-    Balance: {self.balance}'''
+        return f'''Account id: {self.id}, type: {self.__type}, balance: {self.__balance}'''
 
     def __repr__(self) -> str:
         '''
@@ -38,12 +36,30 @@ class Account:
         Returns:
             str: A string containing the account's information.
         '''
-        return f"Account(id = {self.id}, type = {self.type}, \
-balance = {self.balance})"
+        return f"Account(id = {self.id}, type = {self.__type}, \
+balance = {self.__balance})"
+
+    def get_type(self) -> str:
+        '''
+        Type getter
+
+        Returns:
+            str: self.__type
+        '''
+        return self.__type
+
+    def get_balance(self) -> float:
+        '''
+        Balance getter
+
+        Returns:
+            float: self.__balance
+        '''
+        return self.__balance
 
     def deposit(self, amount: float):
         '''
-        Add an amount to the account balance
+        Add an amount to the account __balance
 
         Args:
             amount (float): a positive amount of money to be deposited
@@ -51,8 +67,11 @@ balance = {self.balance})"
         Returns:
             None
         '''
+        if not isinstance(amount, float):
+            print("[INFO] Deposit failed. Invalid amount.")
+            return
 
-        self.balance += amount
+        self.__balance += amount
         print("[INFO] Deposit successful.")
 
     def withdrawal(self, amount: float):
@@ -66,11 +85,15 @@ balance = {self.balance})"
             None
         '''
 
-        if amount > self.balance:
+        if not isinstance(amount, float):
+            print("[INFO] Deposit failed. Invalid amount.")
+            return
+
+        if amount > self.__balance:
             print("[INFO] Withdrawal failed. Insufficient balance.")
             return False  # can_afford()
 
-        self.balance -= amount
+        self.__balance -= amount
         print("[INFO] Withdrawal successful.")
         return True
 
@@ -84,4 +107,4 @@ balance = {self.balance})"
         Returns:
             None
         '''
-        print(f"The balance of Account {self.id} is ${self.balance}.")
+        print(f"The balance of Account {self.id} is ${self.__balance}.")

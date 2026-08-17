@@ -7,9 +7,9 @@ class Transaction:
 
     Attributes:
         id (int): Transaction identifier
-        type (str): Transaction type
-        amount (float): Amount of the transaction
-        description (str):  Transaction description
+        __type (str): Transaction type
+        __amount (float): amount of the transaction
+        __description (str):  Transaction description
         status (str): Transaction status
     '''
 
@@ -20,13 +20,13 @@ class Transaction:
         Args:
             id (int): Transaction identifier
             typ (str): Transaction type
-            amount (float): Amount of the transaction
+            amount (float): amount of the transaction
             description (str):  Transaction description
         '''
-        self.id = id
-        self.type = typ
-        self.amount = amount
-        self.description = description
+        if isinstance(id, int): self.id = id
+        if isinstance(typ, str): self.__type = typ
+        if isinstance(amount, float): self.__amount = amount
+        if isinstance(description, str): self.__description = description
         self.status = "Pending"
 
     def __str__(self):
@@ -37,9 +37,9 @@ class Transaction:
             str: A string containing the account's transaction.
         '''
         return f'''Information of Transaction #{self.id}
-    Type: {self.type}
-    Amount: ${self.amount}
-    Description: {self.description}
+    type: {self.__type}
+    amount: ${self.__amount}
+    Description: {self.__description}
     Status: {self.status}'''
 
     def __repr__(self):
@@ -49,8 +49,26 @@ class Transaction:
         Returns:
             str: A string containing the account's transaction.
         '''
-        return f"Transaction(id = {self.id}, type = {self.type}, \
-description = {self.description}, status = {self.status})"
+        return f"Transaction(id = {self.id}, __type = {self.__type}, \
+__amount = {self.__amount}, description = {self.__description}, status = {self.status})"
+
+    def get_type(self) -> str:
+        '''
+        Get the transaction type
+
+        Returns:
+            str: transaction type
+        '''
+        return self.__type
+
+    def get_amount(self) -> float:
+        '''
+        Get the transaction amount
+
+        Returns:
+            float: transaction amount
+        '''
+        return self.__amount
 
     def process(self) -> bool:
         '''
@@ -67,12 +85,12 @@ description = {self.description}, status = {self.status})"
             print("[INFO] The transaction cannot be completed.")
             return False
 
-        # res = account1.withdrawal(self.amount)
+        # res = account1.withdrawal(self.__amount)
         # if not res:
         #     print("[INFO] The transaction cannot be completed.")
         #     return False
 
-        # account2.deposit(self.amount)
+        # account2.deposit(self.__amount)
         self.status = "Processed"
         print("[INFO] Transaction successful.")
         return True
@@ -84,14 +102,23 @@ description = {self.description}, status = {self.status})"
         self.status = "Cancelled"
         print("[INFO] Transaction cancelled.")
 
-    def update_description(self, description: str):
+    def get_description(self) -> str:
+        '''
+        Get transaction description
+
+        Returns:
+            str: transaction description
+        '''
+        return self.__description
+
+    def set_description(self, description: str):
         '''
         Update transaction description
 
         Args:
             description (str): new transaction description
         '''
-        self.description = description
+        if isinstance(description, str): self.__description = description
 
 
 if __name__ == "__main__":
