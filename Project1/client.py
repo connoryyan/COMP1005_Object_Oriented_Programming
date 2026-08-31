@@ -4,256 +4,219 @@ from branch import Branch
 
 class Client:
     '''
-    Manage the information associated with each client
+    Models a client of the financial organisation.
+
+    The only public attribute is id. All other state is private and is
+    accessed through getter and setter to preserve encapsulation.
 
     Attributes:
-        id (int): Client identifier
-        name (str): Client name
-        __is_active (bool): Whether the client is active
-        __preferred_contact (str): Preferred contact method
-        __contact (str): Client contact
-        accounts (str[]):  accounts of the client
-        preferred_branch (Branch): client preferred branch
+        id (int): The client's unique identifier.
+        __name (str): The client's name.
+        __is_active (bool): Whether the client's record is active.
+        __preferred_contact (str): The client's preferred contact method.
+        __contact (str): The client's contact details.
+        __accounts (list[Account]): The accounts owned by the client.
+        __preferred_branch (Branch): The client's preferred branch.
     '''
 
-    def __init__(
-            self, id: int,
-            name: str,
-            is_active: bool,
-            preferred_contact: str,
-            contact: str
-    ):
+    def __init__(self, id: int, name: str, is_active: bool,
+                 preferred_contact: str, contact: str):
         '''
-        Initialization
+        Initialise a new client with no accounts and no preferred branch.
 
         Args:
-            id (int): Client identifier
-            name (str): Client name
-            is_active (bool): Whether the client is active
-            preferred_contact (str): Preferred contact method
-            contact (str): Client contact
+            id (int): The client's unique identifier.
+            name (str): The client's name.
+            is_active (bool): Whether the client's record is active.
+            preferred_contact (str): The client's preferred contact method.
+            contact (str): The client's contact details.
         '''
-        # self.is_deleted
-        if isinstance(id, int): self.id: int = id
-        if isinstance(name, str): self.name: str = name
-        if isinstance(is_active, bool): self.__is_active: bool = is_active
-        if isinstance(preferred_contact, str):
-            self.__preferred_contact: str = preferred_contact
-        if isinstance(contact, str): self.__contact = contact
+        if not isinstance(id, int) or isinstance(id, bool):
+            id = None
+        if not isinstance(name, str):
+            name = None
+        if not isinstance(is_active, bool):
+            is_active = False
+        if not isinstance(preferred_contact, str):
+            preferred_contact = None
+        if not isinstance(contact, str):
+            contact = None
 
-        self.accounts:  list[Account] = []
-        self.preferred_branch: Branch = None
+        self.id: int | None = id
+        self.__name: str | None = name
+        self.__is_active: bool = is_active
+        self.__preferred_contact: str | None = preferred_contact
+        self.__contact: str | None = contact
+        self.__accounts: list[Account] = []
+        self.__preferred_branch: Branch | None = None
 
     def __str__(self) -> str:
         '''
-        Display the information associated with the client
+        Return a readable description of the client.
 
         Returns:
             str: A string containing the client's information.
         '''
-        return f'''Information of Client #{self.id}
-    Name: {self.name}
-    Active: {'Yes' if self.__is_active else 'No'}
-    Preferred contact method: {self.__preferred_contact}
-    Contact: {self.__contact}
-    Preferred branch: {self.preferred_branch}
-    Accounts: {"\n              ".join([a.__str__() for a in self.accounts])}'''
+        accounts = "\n              ".join(str(a) for a in self.__accounts)
+        return (f"Information of Client #{self.id}\n"
+                f"- Name: {self.__name}\n"
+                f"- Active: {'Yes' if self.__is_active else 'No'}\n"
+                f"- Preferred contact method: {self.__preferred_contact}\n"
+                f"- Contact: {self.__contact}\n"
+                f"- Preferred branch: {self.__preferred_branch}\n"
+                f"- Accounts: {accounts}")
 
     def __repr__(self) -> str:
         '''
-        Display the information associated with the client
+        Return an unambiguous string representation of the client.
 
         Returns:
-            str: A string containing the client's information.
+            str: A string that reconstructs the client's state.
         '''
-        return f"Client(id = {self.id}, name = {self.name}, \
-__is_active = {self.__is_active}, \
-__preferred_contact = {self.__preferred_contact}, \
-__contact = {self.__contact}, accounts = {self.accounts}), \
-preferred_branch = {self.preferred_branch}"
+        return (f"Client(id={self.id}, name={self.__name}, "
+                f"is_active={self.__is_active}, "
+                f"preferred_contact={self.__preferred_contact}, "
+                f"contact={self.__contact}, accounts={self.__accounts}, "
+                f"preferred_branch={self.__preferred_branch})")
 
-    # def display_info(self):
-    #     '''
-    #     Display the information associated with the client
-
-    #     Args:
-    #         None
-
-    #     Returns:
-    #         None
-    #     '''
-    #     print(f"Information of Client #{self.id}")
-    #     print(f"    Name: {self.name}")
-    #     print(f"    Active: {'Yes' if self.__is_active else 'No'}")
-    #     print(f"    Preferred contact method: {self.__preferred_contact}")
-    #     print(f"    Contact: {self.contact}")
-    #     print(f"    Account ID: {self.__account_id}")
-
-    def set_name(self, name: str):
+    def get_name(self) -> str:
         '''
-        Change client's name
+        Return the name of the client.
+
+        Returns:
+            str: The client's name.
+        '''
+        return self.__name
+
+    def set_name(self, name: str) -> None:
+        '''
+        Update the name of the client.
 
         Args:
-            name (str): client's new name
-
-        Returns:
-            None
+            name (str): The client's new name.
         '''
         if isinstance(name, str):
-            self.name = name
+            self.__name = name
 
     def get_preferred_contact(self) -> str:
         '''
-        Get Client's preferred contact
+        Return the client's preferred contact method.
 
         Returns:
-            str: client's preferred contact
+            str: The preferred contact method.
         '''
         return self.__preferred_contact
 
-    def change_preferred_contact(self, preferred_contact: str):
+    def change_preferred_contact(self, preferred_contact: str) -> None:
         '''
-        Change Client's preferred contact information
+        Update the client's preferred contact method.
 
         Args:
-            preferred_contact (str): client's new preferred contact method
-
-        Returns:
-            None
+            preferred_contact (str): The new preferred contact method.
         '''
         if not isinstance(preferred_contact, str):
-            print(f"[INFO] {self.name}'s preferred contact",
-                  f"cannot be changed due to invalid input")
+            print(f"[INFO] {self.__name}'s preferred contact cannot be "
+                  f"changed due to invalid input.")
             return
 
         self.__preferred_contact = preferred_contact
-        print(f"[INFO] {self.name}'s preferred contact method has been",
+        print(f"[INFO] {self.__name}'s preferred contact method has been "
               f"changed to {self.__preferred_contact}.")
 
     def get_contact(self) -> str:
         '''
-        Get client's contact
+        Return the client's contact details.
 
         Returns:
-            str: client's contact
+            str: The client's contact details.
         '''
         return self.__contact
 
-    def change_contact(self, contact: str):
+    def change_contact(self, contact: str) -> None:
         '''
-        Change Client's contact information
+        Update the client's contact details.
 
         Args:
-            contact (str): client's new contact information
-
-        Returns:
-            None
+            contact (str): The client's new contact details.
         '''
         if not isinstance(contact, str):
-            print(f"[INFO] {self.name}'s contact",
-                  f"cannot be changed due to invalid input")
+            print(f"[INFO] {self.__name}'s contact cannot be changed due "
+                  f"to invalid input.")
             return
 
         self.__contact = contact
-        print(f"[INFO] {self.name}'s contact information has been changed "
+        print(f"[INFO] {self.__name}'s contact information has been changed "
               f"to {self.__contact}.")
 
     def get_is_active(self) -> bool:
         '''
-        Get if the client is active
+        Return whether the client's record is active.
 
         Returns:
-            bool: if the client is active
+            bool: True if the client is active, False otherwise.
         '''
         return self.__is_active
 
-    def change_is_active(self, is_active: bool):
+    def change_is_active(self, is_active: bool) -> None:
         '''
-        Change the value of self.__is_active
+        Update whether the client's record is active.
 
         Args:
-            __is_active (bool): if the client is active
-
-        Returns:
-            None
+            is_active (bool): Whether the client should be active.
         '''
-        if is_active not in [True, False]:
-            print(f"[INFO] {self.name}'s activation",
-                  f"cannot be changed due to invalid input")
+        if not isinstance(is_active, bool):
+            print(f"[INFO] {self.__name}'s activation cannot be changed "
+                  f"due to invalid input.")
             return
 
         self.__is_active = is_active
-        print(f"[INFO] {self.name}'s has been recorded as",
-              f"{'active' if self.__is_active else 'inactive'}.")
+        state = "active" if self.__is_active else "inactive"
+        print(f"[INFO] {self.__name} has been recorded as {state}.")
 
-    def add_account(self, account: Account):
+    def add_account(self, account: Account) -> None:
         '''
-        Add an account to client
+        Add an account to the client's list of accounts.
 
         Args:
-            account (Account): the account to be added
+            account (Account): The account to add.
         '''
-        if isinstance(account, Account) and account not in self.accounts:
-            self.accounts.append(account)
+        if isinstance(account, Account) and account not in self.__accounts:
+            self.__accounts.append(account)
 
-    def remove_account(self, account: Account):
+    def remove_account(self, account: Account) -> None:
         '''
-        remove an account by the account name
-
-        Args:
-            account (Account): the account to be removed
-        '''
-        if account in self.accounts:
-            self.accounts.remove(account)
-
-    def set_preferred_branch(self, branch: Branch):
-        '''
-        Set client's preferred branch
+        Remove an account from the client's list of accounts.
 
         Args:
-            branch: the client's preferred branch
+            account (Account): The account to remove.
+        '''
+        if account in self.__accounts:
+            self.__accounts.remove(account)
+
+    def get_accounts(self) -> list[Account]:
+        '''
+        Return the accounts owned by the client.
+
+        Returns:
+            list[Account]: The client's accounts.
+        '''
+        return self.__accounts
+
+    def get_preferred_branch(self) -> Branch | None:
+        '''
+        Return the client's preferred branch.
+
+        Returns:
+            Branch: The client's preferred branch, or None if not set.
+        '''
+        return self.__preferred_branch
+
+    def set_preferred_branch(self, branch: Branch) -> None:
+        '''
+        Set the client's preferred branch.
+
+        Args:
+            branch (Branch): The client's preferred branch.
         '''
         if isinstance(branch, Branch):
-            self.preferred_branch = branch
-
-
-if __name__ == "__main__":
-    account_1 = Account(1, "savings")
-    print(account_1)
-    account2 = Account(2, "savings")
-    print(account2)
-    print()
-
-    client_1 = Client(1, "Connor", True, "Email",
-                     "connor.yan@student.adelaide.edu.au")
-    client_2 = Client(2, "Tianyi", False, "Phone", "04123456")
-    client_1.add_account(account_1)
-    client_1.add_account(account2)
-    print(client_1)
-    print()
-
-    client_1.remove_account(account_1)
-    print(client_1)
-    print()
-
-    print(account_1)
-    print()
-
-    branch_1 = Branch(1, "Firle Branch", "Firle", "08 8123 4567", True)
-    branch_2 = Branch(2, "Norwood Branch", "Norwood", "08 8234 5678", False)
-    branch_3 = Branch(3, "Adelaide Branch",
-                        "Adelaide CBD", "08 8345 6789", True)
-
-    client_1.set_preferred_branch(branch_1)
-    client_2.set_preferred_branch(branch_3)
-    print(client_1)
-    print(client_2)
-    print()
-
-    client_1.set_preferred_branch(branch_2)
-    print(client_1)
-    print()
-
-    print(branch_1)
-    print(branch_2)
-    print(branch_3)
+            self.__preferred_branch = branch

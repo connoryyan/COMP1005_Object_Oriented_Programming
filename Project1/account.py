@@ -1,108 +1,123 @@
 class Account:
     '''
-    Manage the information associated with accounts and support common financial operations such as deposits, withdrawals and transfers
+    Models a single bank account and supports the core financial operations of
+    depositing and withdrawing money.
+
+    The only public attribute is id. The account type and balance are
+    private and are accessed through getter and setter methods.
 
     Attributes:
-        id (int): account identifier
-        __type (str): account type
-        __balance (float): account balance
+        id (int): The account's unique identifier.
+        __type (str): The type of the account (for example, Savings or
+            Checking).
+        __balance (float): The account's current balance in dollars.
     '''
 
-    def __init__(self, id: int, typ: str):
+    def __init__(self, id: int, account_type: str):
         '''
-        Initialization
+        Initialise a new account with a zero balance.
 
         Args:
-            id (int): account identifier
-            typ (str): account type
+            id (int): The account's unique identifier.
+            account_type (str): The type of the account.
         '''
-        if isinstance(id, int): self.id: int = id
-        if isinstance(typ, str): self.__type: str = typ
+
+        if not isinstance(id, int) or isinstance(id, bool):
+            id = None
+        if not isinstance(account_type, str):
+            account_type = None
+
+        self.id: int | None = id
+        self.__type: str | None = account_type
         self.__balance: float = 0.0
 
     def __str__(self) -> str:
         '''
-        Display the information associated with the account
+        Return a readable description of the account.
 
         Returns:
             str: A string containing the account's information.
         '''
-        return f'''Account id: {self.id}, type: {self.__type}, balance: {self.__balance}'''
+        return (f"Account id: {self.id}, type: {self.__type}, "
+                f"balance: {self.__balance}")
 
     def __repr__(self) -> str:
         '''
-        Display the information associated with the account
+        Return an unambiguous string representation of the account.
 
         Returns:
-            str: A string containing the account's information.
+            str: A string that reconstructs the account's state.
         '''
-        return f"Account(id = {self.id}, type = {self.__type}, \
-balance = {self.__balance})"
+        return (f"Account(id={self.id}, type={self.__type}, "
+                f"balance={self.__balance})")
 
     def get_type(self) -> str:
         '''
-        Type getter
+        Return the type of the account.
 
         Returns:
-            str: self.__type
+            str: The account type.
         '''
         return self.__type
 
     def get_balance(self) -> float:
         '''
-        Balance getter
+        Return the current balance of the account.
 
         Returns:
-            float: self.__balance
+            float: The account balance.
         '''
         return self.__balance
 
-    def deposit(self, amount: float):
+    def deposit(self, amount: float) -> bool:
         '''
-        Add an amount to the account __balance
+        Add a positive amount of money to the account balance.
 
         Args:
-            amount (float): a positive amount of money to be deposited
+            amount (float): A positive amount of money to deposit.
 
         Returns:
-            None
+            bool: True if the deposit succeeded, False otherwise.
         '''
-        if not isinstance(amount, float):
+        if (isinstance(amount, bool)
+            # Avoid boolean values to be accepted as integers.
+            or not isinstance(amount, (int, float))
+            or amount <= 0):
             print("[INFO] Deposit failed. Invalid amount.")
-            return
+            return False
 
         self.__balance += amount
         print("[INFO] Deposit successful.")
+        return True
 
-    def withdrawal(self, amount: float):
+    def withdrawal(self, amount: float) -> bool:
         '''
-        Take an amount out of the account balance
+        Take a positive amount of money out of the account balance.
 
         Args:
-            amount (float): a positive amount of money to be withdrawed
+            amount (float): A positive amount of money to withdraw.
 
         Returns:
-            None
+            bool: True if the withdrawal succeeded, False otherwise.
         '''
-
-        if not isinstance(amount, float):
-            print("[INFO] Deposit failed. Invalid amount.")
-            return
+        if (isinstance(amount, bool)
+            # Avoid boolean values to be accepted as integers.
+            or not isinstance(amount, (int, float))
+            or amount <= 0):
+            print("[INFO] Withdrawal failed. Invalid amount.")
+            return False
 
         if amount > self.__balance:
             print("[INFO] Withdrawal failed. Insufficient balance.")
-            return False  # can_afford()
+            return False
 
         self.__balance -= amount
         print("[INFO] Withdrawal successful.")
         return True
 
-    def display_balance(self):
+    def display_balance(self) -> None:
         '''
-        Display account balance
-
-        Args:
-            None
+        Print the account balance to the console.
 
         Returns:
             None

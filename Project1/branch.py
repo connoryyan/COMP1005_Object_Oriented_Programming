@@ -1,131 +1,144 @@
 class Branch:
     '''
-    Manage information of a branch of the financial organisation
+    Models a single branch of the financial organisation.
+
+    The only public attribute is id. The branch details are private and are
+    accessed through getters and setters.
 
     Attributes:
-        id (int): Brunch number
-        __name (str): Brunch name
-        __location (str): Brunch suburb or location
-        __phone (str):  Phone number
-        is_open (bool): Whether the branch is currently open.
+        id (int): The branch's unique identifier.
+        __name (str): The branch's name.
+        __location (str): The branch's suburb or location.
+        __phone (str): The branch's phone number.
+        __is_open (bool): Whether the branch is currently open.
     '''
 
-    def __init__(
-            self,
-            id: int,
-            name: str,
-            location: str,
-            phone: str,
-            is_open=False
-    ):
+    def __init__(self, id: int, name: str, location: str, phone: str,
+                 is_open: bool = False):
         '''
-        Initialization
+        Initialise a new branch.
 
         Args:
-            id (int): Brunch number
-            name (str): Brunch name
-            location (str): Brunch suburb or location
-            phone (str):  Phone number
+            id (int): The branch's unique identifier.
+            name (str): The branch's name.
+            location (str): The branch's suburb or location.
+            phone (str): The branch's phone number.
             is_open (bool): Whether the branch is currently open.
         '''
-        if isinstance(id, int): self.id: int = id
-        if isinstance(name, str): self.__name: str = name
-        if isinstance(location, str): self.__location: str = location
-        if isinstance(phone, str): self.__phone: str = phone
-        if is_open in [True, False]: self.is_open: bool = is_open
+        if not isinstance(id, int) or isinstance(id, bool):
+            id = None
+        if not isinstance(name, str):
+            name = None
+        if not isinstance(location, str):
+            location = None
+        if not isinstance(phone, str):
+            phone = None
+        if not isinstance(is_open, bool):
+            is_open = False
+
+        self.id: int | None = id
+        self.__name: str | None = name
+        self.__location: str | None = location
+        self.__phone: str | None = phone
+        self.__is_open: bool = is_open
 
     def __str__(self) -> str:
         '''
-        Display the information associated with the branch
+        Return a readable description of the branch.
 
         Returns:
             str: A string containing the branch's information.
         '''
-        return f"Branch id:{self.id}, Name: {self.__name}, Location: {self.__location}, Phone No.: {self.__phone},State: {"Open" if self.is_open else "Close"}"
+        state = "Open" if self.__is_open else "Closed"
+        return (f"Branch id: {self.id}, Name: {self.__name}, "
+                f"Location: {self.__location}, Phone No.: {self.__phone}, "
+                f"State: {state}")
 
     def __repr__(self) -> str:
         '''
-        Display the information associated with the branch
+        Return an unambiguous string representation of the branch.
 
         Returns:
-            str: A string containing the branch's information.
+            str: A string that reconstructs the branch's state.
         '''
-        return f"Branch(id = {self.id}, name = {self.__name}, \
-location = {self.__location}, phone = {self.__phone}, \
-is_open = {self.is_open})"
+        return (f"Branch(id={self.id}, name={self.__name}, "
+                f"location={self.__location}, phone={self.__phone}, "
+                f"is_open={self.__is_open})")
 
-    def open(self):
+    def open(self) -> None:
         '''
-        Set the branch open
+        Mark the branch as open for business.
         '''
-        self.is_open = True
+        self.__is_open = True
 
-    def close(self):
+    def close(self) -> None:
         '''
-        Set the branch close
+        Mark the branch as closed for business.
         '''
-        self.is_open = False
+        self.__is_open = False
+
+    def get_is_open(self) -> bool:
+        '''
+        Return whether the branch is currently open.
+
+        Returns:
+            bool: True if the branch is open, False otherwise.
+        '''
+        return self.__is_open
 
     def get_name(self) -> str:
         '''
-        Get branch name
+        Return the name of the branch.
 
         Returns:
-            str: branch name
+            str: The branch name.
         '''
         return self.__name
 
-    def set_name(self, name):
+    def set_name(self, name: str) -> None:
         '''
-        Set branch name
+        Update the name of the branch.
 
         Args:
-            name (str): branch name
+            name (str): The new branch name.
         '''
-        if isinstance(name, str): self.__name = name
+        if isinstance(name, str):
+            self.__name = name
 
     def get_location(self) -> str:
         '''
-        Get branch location
+        Return the location of the branch.
 
         Returns:
-            str: branch location
+            str: The branch location.
         '''
         return self.__location
-    
-    def set_location(self, location):
+
+    def set_location(self, location: str) -> None:
         '''
-        Set branch location
+        Update the location of the branch.
 
         Args:
-            location (str): branch location
+            location (str): The new branch location.
         '''
-        if isinstance(location, str): self.__name = location
+        if isinstance(location, str):
+            self.__location = location
 
     def get_phone(self) -> str:
         '''
-        Get branch phone number
+        Return the phone number of the branch.
 
         Returns:
-            str: branch phone number
+            str: The branch phone number.
         '''
         return self.__phone
 
-    def set_phone(self, phone: str):
+    def set_phone(self, phone: str) -> None:
         '''
-        Update phone number
+        Update the phone number of the branch.
 
         Args:
-            phone (str): new branch phone number
+            phone (str): The new branch phone number.
         '''
-        if isinstance(phone, str): self.__phone = phone
-
-
-if __name__ == "__main__":
-    branch_1 = Branch(1, "www", "Firle", "12343232", True)
-    branch_2 = Branch(2, "ddd", "Norwood", "2141242")
-
-    branch_2.open()
-
-    print(branch_1)
-    print(branch_2)
+        if isinstance(phone, str):
+            self.__phone = phone

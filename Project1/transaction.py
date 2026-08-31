@@ -3,139 +3,155 @@ from account import Account
 
 class Transaction:
     '''
-    Manage the information of a transaction
+    Models a single financial transaction and moves money between accounts
+    when it is processed.
+
+    The only public attribute is id. All other state is private and is
+    accessed through getter and setter methods.
 
     Attributes:
-        id (int): Transaction identifier
-        __type (str): Transaction type
-        __amount (float): amount of the transaction
-        __description (str):  Transaction description
-        __status (str): Transaction status
+        id (int): The transaction's unique identifier.
+        __type (str): The type of the transaction.
+        __amount (float): The amount of money involved in the transaction.
+        __description (str): A description of the transaction.
+        __status (str): The current status of the transaction.
     '''
 
-    def __init__(self, id: int, typ: str, amount: float, description: str):
+    def __init__(self, id: int, transaction_type: str, amount: float,
+                 description: str):
         '''
-        Initialization
+        Initialise a new pending transaction.
 
         Args:
-            id (int): Transaction identifier
-            typ (str): Transaction type
-            amount (float): amount of the transaction
-            description (str):  Transaction description
+            id (int): The transaction's unique identifier.
+            transaction_type (str): The type of the transaction.
+            amount (float): The amount of money involved.
+            description (str): A description of the transaction.
         '''
-        if isinstance(id, int): self.id = id
-        if isinstance(typ, str): self.__type = typ
-        if isinstance(amount, float): self.__amount = amount
-        if isinstance(description, str): self.__description = description
-        self.__status = "Pending"
+        if not isinstance(id, int) or isinstance(id, bool):
+            id = None
+        if not isinstance(transaction_type, str):
+            transaction_type = None
+        if not isinstance(amount, (int, float)) or isinstance(amount, bool):
+            amount = None
+        if not isinstance(description, str):
+            description = None
 
-    def __str__(self):
-        '''
-        Display the information associated with the transaction
+        self.id: int | None = id
+        self.__type: str | None = transaction_type
+        self.__amount: float | None = amount
+        self.__description: str | None = description
+        self.__status: str = "Pending"
 
-        Returns:
-            str: A string containing the account's transaction.
+    def __str__(self) -> str:
         '''
-        return f'''Information of Transaction #{self.id}
-    type: {self.__type}
-    amount: ${self.__amount}
-    Description: {self.__description}
-    Status: {self.__status}'''
-
-    def __repr__(self):
-        '''
-        Display the information associated with the transaction
+        Return a readable description of the transaction.
 
         Returns:
-            str: A string containing the account's transaction.
+            str: A string containing the transaction's information.
         '''
-        return f"Transaction(id = {self.id}, __type = {self.__type}, \
-__amount = {self.__amount}, description = {self.__description}, status = {self.__status})"
+        return (f"Information of Transaction #{self.id}\n"
+                f"- Type: {self.__type}\n"
+                f"- Amount: ${self.__amount}\n"
+                f"- Description: {self.__description}\n"
+                f"- Status: {self.__status}")
+
+    def __repr__(self) -> str:
+        '''
+        Return an unambiguous string representation of the transaction.
+
+        Returns:
+            str: A string that reconstructs the transaction's state.
+        '''
+        return (f"Transaction(id={self.id}, type={self.__type}, "
+                f"amount={self.__amount}, description={self.__description}, "
+                f"status={self.__status})")
 
     def get_type(self) -> str:
         '''
-        Get the transaction type
+        Return the type of the transaction.
 
         Returns:
-            str: transaction type
+            str: The transaction type.
         '''
         return self.__type
 
     def get_amount(self) -> float:
         '''
-        Get the transaction amount
+        Return the amount involved in the transaction.
 
         Returns:
-            float: transaction amount
+            float: The transaction amount.
         '''
         return self.__amount
 
-    def get_status(self) -> bool:
+    def get_status(self) -> str:
         '''
-        Get the transaction status
+        Return the current status of the transaction.
 
         Returns:
-            bool: transaction status
+            str: The transaction status.
         '''
         return self.__status
 
-    def process(self) -> bool:
+    def process(self, source: Account = None,
+                destination: Account = None) -> bool:
         '''
-        Allow a pending transaction to be processed
+        Process a pending transaction by moving its amount from the source
+        account to the destination account.
+
+        A deposit supplies only a destination, a withdrawal supplies only a
+        source, and a transfer supplies both.
 
         Args:
-            # account1 (Account): The subject of the transaction
-            # account2 (Account): The object of the transaction
+            source (Account): The account the money is taken from.
+            destination (Account): The account the money is paid into.
 
         Returns:
-            bool: If the operation is successful
+            bool: True if the transaction was processed, False otherwise.
         '''
         if self.__status == "Cancelled":
             print("[INFO] The transaction cannot be completed.")
             return False
 
-        # res = account1.withdrawal(self.__amount)
-        # if not res:
-        #     print("[INFO] The transaction cannot be completed.")
-        #     return False
+        if self.__status == "Processed":
+            print("[INFO] The transaction has already been processed.")
+            return False
 
-        # account2.deposit(self.__amount)
+        if source is not None and not source.withdrawal(self.__amount):
+            print("[INFO] The transaction cannot be completed.")
+            return False
+
+        if destination is not None and not destination.deposit(self.__amount):
+            print("[INFO] The transaction cannot be completed.")
+            return False
+
         self.__status = "Processed"
         print("[INFO] Transaction successful.")
         return True
 
-    def cancel(self):
+    def cancel(self) -> None:
         '''
-        Allow a pending transaction to be cancelled
+        Cancel a pending transaction.
         '''
         self.__status = "Cancelled"
         print("[INFO] Transaction cancelled.")
 
     def get_description(self) -> str:
         '''
-        Get transaction description
+        Return the description of the transaction.
 
         Returns:
-            str: transaction description
+            str: The transaction description.
         '''
         return self.__description
 
-    def set_description(self, description: str):
+    def set_description(self, description: str) -> None:
         '''
-        Update transaction description
+        Update the description of the transaction.
 
         Args:
-            description (str): new transaction description
+            description (str): The new transaction description.
         '''
-        if isinstance(description, str): self.__description = description
-
-
-if __name__ == "__main__":
-    transaction_1 = Transaction(1, "n", 100.0, "Hello")
-    transaction_2 = Transaction(2, "d", 120.0, "Hello")
-
-    transaction_1.process()
-    transaction_2.cancel()
-
-    print(transaction_1)
-    print(transaction_2)
+        if isinstance(description, str):
+            self.__description = description
