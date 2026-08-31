@@ -3,14 +3,14 @@ from account import Account
 
 class Transaction:
     '''
-    The information associated with each client
+    Manage the information of a transaction
 
     Attributes:
         id (int): Transaction identifier
         __type (str): Transaction type
         __amount (float): amount of the transaction
         __description (str):  Transaction description
-        status (str): Transaction status
+        __status (str): Transaction status
     '''
 
     def __init__(self, id: int, typ: str, amount: float, description: str):
@@ -27,7 +27,7 @@ class Transaction:
         if isinstance(typ, str): self.__type = typ
         if isinstance(amount, float): self.__amount = amount
         if isinstance(description, str): self.__description = description
-        self.status = "Pending"
+        self.__status = "Pending"
 
     def __str__(self):
         '''
@@ -40,7 +40,7 @@ class Transaction:
     type: {self.__type}
     amount: ${self.__amount}
     Description: {self.__description}
-    Status: {self.status}'''
+    Status: {self.__status}'''
 
     def __repr__(self):
         '''
@@ -50,7 +50,7 @@ class Transaction:
             str: A string containing the account's transaction.
         '''
         return f"Transaction(id = {self.id}, __type = {self.__type}, \
-__amount = {self.__amount}, description = {self.__description}, status = {self.status})"
+__amount = {self.__amount}, description = {self.__description}, status = {self.__status})"
 
     def get_type(self) -> str:
         '''
@@ -70,6 +70,15 @@ __amount = {self.__amount}, description = {self.__description}, status = {self.s
         '''
         return self.__amount
 
+    def get_status(self) -> bool:
+        '''
+        Get the transaction status
+
+        Returns:
+            bool: transaction status
+        '''
+        return self.__status
+
     def process(self) -> bool:
         '''
         Allow a pending transaction to be processed
@@ -81,7 +90,7 @@ __amount = {self.__amount}, description = {self.__description}, status = {self.s
         Returns:
             bool: If the operation is successful
         '''
-        if self.status == "Cancelled":
+        if self.__status == "Cancelled":
             print("[INFO] The transaction cannot be completed.")
             return False
 
@@ -91,7 +100,7 @@ __amount = {self.__amount}, description = {self.__description}, status = {self.s
         #     return False
 
         # account2.deposit(self.__amount)
-        self.status = "Processed"
+        self.__status = "Processed"
         print("[INFO] Transaction successful.")
         return True
 
@@ -99,7 +108,7 @@ __amount = {self.__amount}, description = {self.__description}, status = {self.s
         '''
         Allow a pending transaction to be cancelled
         '''
-        self.status = "Cancelled"
+        self.__status = "Cancelled"
         print("[INFO] Transaction cancelled.")
 
     def get_description(self) -> str:

@@ -5,10 +5,10 @@ from branch import Branch
 
 if __name__ == "__main__":
     client_1 = Client(1, "Connor Yan", True, "email",
-                      "connor.yan@student.adelaide.edu.au", 1)
+                      "connor.yan@student.adelaide.edu.au")
     client_2 = Client(2, "Tianyi Zhao", False, "email",
-                      "tianyi.zhao@student.adelaide.edu.au", 2)
-    client_3 = Client(3, "Leo Messi", True, "phone", "0400 123 456", 3)
+                      "tianyi.zhao@student.adelaide.edu.au")
+    client_3 = Client(3, "Leo Messi", True, "phone", "0400 123 456")
 
     account_1 = Account(1, "Savings")
     account_2 = Account(2, "Checking")
@@ -114,8 +114,8 @@ if __name__ == "__main__":
     print(transaction_3)
 
     print("Before changing Transaction 1:")
-    print(f"Transaction 1 status: {transaction_1.status}")
-    print(f"Transaction 2 status: {transaction_2.status}")
+    print(f"Transaction 1 status: {transaction_1.get_status()}")
+    print(f"Transaction 2 status: {transaction_2.get_status()}")
 
     transaction_1.set_description("Updated deposit description")
 

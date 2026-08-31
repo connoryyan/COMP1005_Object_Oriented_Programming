@@ -1,6 +1,6 @@
 class Account:
     '''
-    The information associated with accounts and support common financial operations such as deposits, withdrawals and transfers
+    Manage the information associated with accounts and support common financial operations such as deposits, withdrawals and transfers
 
     Attributes:
         id (int): account identifier
@@ -16,9 +16,9 @@ class Account:
             id (int): account identifier
             typ (str): account type
         '''
-        if isinstance(id, int): self.id = id
-        if isinstance(typ, str): self.__type = typ
-        self.__balance = 0.0
+        if isinstance(id, int): self.id: int = id
+        if isinstance(typ, str): self.__type: str = typ
+        self.__balance: float = 0.0
 
     def __str__(self) -> str:
         '''

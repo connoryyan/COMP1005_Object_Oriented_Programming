@@ -1,9 +1,10 @@
 from account import Account
+from branch import Branch
 
 
 class Client:
     '''
-    The information associated with each client
+    Manage the information associated with each client
 
     Attributes:
         id (int): Client identifier
@@ -12,6 +13,7 @@ class Client:
         __preferred_contact (str): Preferred contact method
         __contact (str): Client contact
         accounts (str[]):  accounts of the client
+        preferred_branch (Branch): client preferred branch
     '''
 
     def __init__(
@@ -31,12 +33,16 @@ class Client:
             preferred_contact (str): Preferred contact method
             contact (str): Client contact
         '''
-        self.id = id
-        self.name = name
-        self.__is_active = is_active
-        self.__preferred_contact = preferred_contact
-        self.__contact = contact
-        self.accounts = []
+        # self.is_deleted
+        if isinstance(id, int): self.id: int = id
+        if isinstance(name, str): self.name: str = name
+        if isinstance(is_active, bool): self.__is_active: bool = is_active
+        if isinstance(preferred_contact, str):
+            self.__preferred_contact: str = preferred_contact
+        if isinstance(contact, str): self.__contact = contact
+
+        self.accounts:  list[Account] = []
+        self.preferred_branch: Branch = None
 
     def __str__(self) -> str:
         '''
@@ -50,6 +56,7 @@ class Client:
     Active: {'Yes' if self.__is_active else 'No'}
     Preferred contact method: {self.__preferred_contact}
     Contact: {self.__contact}
+    Preferred branch: {self.preferred_branch}
     Accounts: {"\n              ".join([a.__str__() for a in self.accounts])}'''
 
     def __repr__(self) -> str:
@@ -62,7 +69,8 @@ class Client:
         return f"Client(id = {self.id}, name = {self.name}, \
 __is_active = {self.__is_active}, \
 __preferred_contact = {self.__preferred_contact}, \
-contact = {self.__contact}, accounts = {self.accounts})"
+__contact = {self.__contact}, accounts = {self.accounts}), \
+preferred_branch = {self.preferred_branch}"
 
     # def display_info(self):
     #     '''
@@ -198,23 +206,54 @@ contact = {self.__contact}, accounts = {self.accounts})"
         if account in self.accounts:
             self.accounts.remove(account)
 
+    def set_preferred_branch(self, branch: Branch):
+        '''
+        Set client's preferred branch
+
+        Args:
+            branch: the client's preferred branch
+        '''
+        if isinstance(branch, Branch):
+            self.preferred_branch = branch
+
 
 if __name__ == "__main__":
-    account1 = Account(1, "savings")
-    print(account1)
+    account_1 = Account(1, "savings")
+    print(account_1)
     account2 = Account(2, "savings")
     print(account2)
     print()
 
-    client1 = Client(1, "Connor", True, "Email",
+    client_1 = Client(1, "Connor", True, "Email",
                      "connor.yan@student.adelaide.edu.au")
-    client1.add_account(account1)
-    client1.add_account(account2)
-    print(client1)
+    client_2 = Client(2, "Tianyi", False, "Phone", "04123456")
+    client_1.add_account(account_1)
+    client_1.add_account(account2)
+    print(client_1)
     print()
 
-    client1.remove_account(account1)
-    print(client1)
+    client_1.remove_account(account_1)
+    print(client_1)
     print()
 
-    print(account1)
+    print(account_1)
+    print()
+
+    branch_1 = Branch(1, "Firle Branch", "Firle", "08 8123 4567", True)
+    branch_2 = Branch(2, "Norwood Branch", "Norwood", "08 8234 5678", False)
+    branch_3 = Branch(3, "Adelaide Branch",
+                        "Adelaide CBD", "08 8345 6789", True)
+
+    client_1.set_preferred_branch(branch_1)
+    client_2.set_preferred_branch(branch_3)
+    print(client_1)
+    print(client_2)
+    print()
+
+    client_1.set_preferred_branch(branch_2)
+    print(client_1)
+    print()
+
+    print(branch_1)
+    print(branch_2)
+    print(branch_3)
