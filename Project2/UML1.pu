@@ -1,0 +1,90 @@
+@startuml
+
+class Resource {
+    - __name: str
+    - __quantity: int
+    - __description: str
+
+    + __init__(name: str, description: str, quantity: int = 0)
+    + get_name(): str
+    + get_description(): str
+    + get_quantity(): int
+    + add_quantity(quantity: int)
+    + __str__(): str
+}
+
+class ResourceManager {
+    {static} + KEYS: tuple
+
+    - __resources: dict[str, Resource]
+
+    + __init__(
+        necrotic_quant: int = 0,
+        spirit_quant: int = 0,
+        bone_quant: int = 0,
+        flesh_quant: int = 0,
+        ectoplasm_quant: int = 0
+    )
+    + get_resources(): dict[str, Resource]
+    {static} + input_to_dict(
+        quantities: dict[str, int] | tuple
+    ): dict[str, int] | None
+    + collect_resources(quantities)
+    + has_resources(quantities): bool
+    + spend_resources(quantities): bool
+}
+
+class SummonRitual {
+    - __name: str
+    - __undead_name: str
+    - __starting_health: int
+    - __starting_power: int
+    - __costs: dict[str, int]
+
+    + __init__(
+        name: str,
+        undead_name: str,
+        starting_health: int,
+        starting_power: int,
+        costs: dict[str, int] | tuple
+    )
+    + get_name()
+    + get_undead_name()
+    + get_starting_health()
+    + get_starting_power()
+    + get_costs()
+    + can_perform(resourceManager: ResourceManager): bool
+    + perform(resourceManager: ResourceManager): bool
+    + summon(id: int): Undead
+}
+
+class Undead {
+    {static} + MIN_HEALTH: int = 1
+    {static} + MAX_HEALTH: int = 100
+    {static} + MIN_POWER: int = 1
+    {static} + MAX_POWER: int = 100
+    {static} + MAX_LEVEL: int = 10
+    {static} + HEALTH_PER_LEVEL: int = 10
+    {static} + POWER_PER_LEVEL: int = 5
+
+    - __id
+    - __name: str
+    - __health: int
+    - __power: int
+    - __level: int
+
+    + __init__(id, name, health, power)
+    + get_id()
+    + get_name()
+    + get_health()
+    + get_power()
+    + get_level()
+    + level_up()
+    + __str__(): str
+}
+
+ResourceManager "1" *-- "5" Resource : manages
+SummonRitual ..> ResourceManager : uses
+SummonRitual ..> Undead : creates
+
+@enduml

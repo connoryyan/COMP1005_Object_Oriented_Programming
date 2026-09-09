@@ -80,9 +80,9 @@ class Account:
             bool: True if the deposit succeeded, False otherwise.
         '''
         if (isinstance(amount, bool)
-            # Avoid boolean values to be accepted as integers.
-            or not isinstance(amount, (int, float))
-            or amount <= 0):
+                # Avoid boolean values to be accepted as integers.
+                or not isinstance(amount, (int, float))
+                or amount <= 0):
             print("[INFO] Deposit failed. Invalid amount.")
             return False
 
@@ -101,9 +101,9 @@ class Account:
             bool: True if the withdrawal succeeded, False otherwise.
         '''
         if (isinstance(amount, bool)
-            # Avoid boolean values to be accepted as integers.
-            or not isinstance(amount, (int, float))
-            or amount <= 0):
+                # Avoid boolean values to be accepted as integers.
+                or not isinstance(amount, (int, float))
+                or amount <= 0):
             print("[INFO] Withdrawal failed. Invalid amount.")
             return False
 
