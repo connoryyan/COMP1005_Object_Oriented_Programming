@@ -1,4 +1,4 @@
-<diagram program="umletino" version="15.1"><zoom_level>11</zoom_level><help_text>Space for diagram notes str</help_text><element><id>UMLClass</id><coordinates><x>902</x><y>125</y><w>275</w><h>253</h></coordinates><panel_attributes>Account
+<diagram program="umletino" version="15.1"><zoom_level>7</zoom_level><help_text>Space for diagram notes str</help_text><element><id>UMLClass</id><coordinates><x>378</x><y>77</y><w>175</w><h>161</h></coordinates><panel_attributes>Account
 --
 - id: int
 - type: str
@@ -14,7 +14,7 @@
 + withdrawal(amount: float): bool
 + get_transactions(): Transaction[]
 + display_balance()
-</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>374</x><y>48</y><w>275</w><h>407</h></coordinates><panel_attributes>Client
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>42</x><y>28</y><w>175</w><h>259</h></coordinates><panel_attributes>Client
 --
 - id: int
 - name: str
@@ -40,7 +40,7 @@
 + get_accounts(): Account[]
 + get_preferred_branch(): Branch
 + set_preferred_branch(branch: Branch)
-</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>374</x><y>587</y><w>275</w><h>308</h></coordinates><panel_attributes>Branch
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>42</x><y>371</y><w>175</w><h>196</h></coordinates><panel_attributes>Branch
 --
 - id: int
 - name: str
@@ -60,7 +60,7 @@
 + set_location(location: str)
 + get_phone(): str
 + set_phone(phone: str)
-</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>913</x><y>620</y><w>275</w><h>319</h></coordinates><panel_attributes>Transaction
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>385</x><y>392</y><w>175</w><h>203</h></coordinates><panel_attributes>Transaction
 --
 - id: int
 - type: str
@@ -79,13 +79,13 @@
 + get_status(): str
 + process(source: Account, destination: Account): bool
 + cancel()
-+ get_resulting_balance(): float</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>495</x><y>444</y><w>88</w><h>165</h></coordinates><panel_attributes>lt=-&gt;
++ get_resulting_balance(): float</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>119</x><y>280</y><w>56</w><h>105</h></coordinates><panel_attributes>lt=-
 m1=0..*
 m2=0..1
-prefers v</panel_attributes><additional_attributes>10;10;10;130</additional_attributes></element><element><id>Relation</id><coordinates><x>638</x><y>213</y><w>286</w><h>55</h></coordinates><panel_attributes>lt=&lt;&lt;&lt;&lt;-
+prefers v</panel_attributes><additional_attributes>10;10;10;130</additional_attributes></element><element><id>Relation</id><coordinates><x>210</x><y>133</y><w>182</w><h>35</h></coordinates><panel_attributes>lt=&lt;&lt;&lt;&lt;-
 m1=0..1
 m2=0..*
-has &gt;</panel_attributes><additional_attributes>10;20;240;20</additional_attributes></element><element><id>Relation</id><coordinates><x>1034</x><y>367</y><w>66</w><h>275</h></coordinates><panel_attributes>lt=-&gt;&gt;&gt;&gt;&gt;
+has &gt;</panel_attributes><additional_attributes>10;20;240;20</additional_attributes></element><element><id>Relation</id><coordinates><x>462</x><y>231</y><w>42</w><h>175</h></coordinates><panel_attributes>lt=-&gt;&gt;&gt;&gt;&gt;
 m1=0..*
 m2=1
 has v</panel_attributes><additional_attributes>10;227;10;12</additional_attributes></element></diagram>

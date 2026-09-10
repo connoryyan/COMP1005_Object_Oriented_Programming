@@ -1,0 +1,69 @@
+<diagram program="umletino" version="15.1"><zoom_level>5</zoom_level><help_text>Space for diagram notes str</help_text><element><id>UMLClass</id><coordinates><x>113</x><y>180</y><w>175</w><h>135</h></coordinates><panel_attributes>ResourceManager
+--
++ KEYS: tuple
+- resources: dict[str, Resource]
+--
++ init(necrotic_quant: int = 0, spirit_quant: int = 0,
+          bone_quant: int = 0, flesh_quant: int = 0,
+          ectoplasm_quant: int = 0)
++ get_resources(): dict[str, Resource]
++ input_to_dict(quantities: dict[str, int] | tuple) 
+   : dict[str, int] | None
++ collect_resources(quantities)
++ has_resources(quantities): bool
++ spend_resources(quantities): bool</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>383</x><y>180</y><w>150</w><h>115</h></coordinates><panel_attributes>Resource
+--
+- name: str
+- quantity: int
+- description: str
+--
++ init(name: str, description: str, quantity: int = 0)
++ get_name(): str
++ get_description(): str
++ get_quantity(): int
++ add_quantity(quantity: int)
++ str(): str</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>113</x><y>375</y><w>175</w><h>170</h></coordinates><panel_attributes>SummoningRitual
+--
+- name: str
+- undead_name: str
+- starting_health: int
+- starting_power: int
+- costs: dict[str, int]
+--
++ init(name: str, undead_name: str, starting_health: int,
+           starting_power: int, costs: dict[str, int] | tuple)
++ get_name()
++ get_undead_name()
++ get_starting_health()
++ get_starting_power()
++ get_costs()
++ can_perform(resourceManager: ResourceManager): bool
++ perform(resourceManager: ResourceManager): bool
++ summon(id: int): Undead</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>383</x><y>375</y><w>150</w><h>170</h></coordinates><panel_attributes>Undead
+--
++ MIN_HEALTH: int = 1
++ MAX_HEALTH: int = 100
++ MIN_POWER: int = 1
++ MAX_POWER: int = 100
++ MAX_LEVEL: int = 10
++ HEALTH_PER_LEVEL: int = 10
++ POWER_PER_LEVEL: int = 5
+- id
+- name: str
+- health: int
+- power: int
+- level: int
+--
++ init(id, name, health, power)
++ get_id()
++ get_name()
++ get_health()
++ get_power()
++ get_level()
++ level_up()
++ str(): str</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>283</x><y>200</y><w>110</w><h>25</h></coordinates><panel_attributes>lt=&lt;&lt;&lt;&lt;&lt;-
+m1=1
+m2=5
+manages</panel_attributes><additional_attributes>10;20;200;20</additional_attributes></element><element><id>Relation</id><coordinates><x>198</x><y>310</y><w>25</w><h>75</h></coordinates><panel_attributes>lt=.&gt;
+uses</panel_attributes><additional_attributes>10;130;10;10</additional_attributes></element><element><id>Relation</id><coordinates><x>283</x><y>435</y><w>110</w><h>20</h></coordinates><panel_attributes>lt=.&gt;
+creates</panel_attributes><additional_attributes>10;20;200;20</additional_attributes></element></diagram>

@@ -126,6 +126,8 @@ class ResourceManager:
         "ectoplasm"
     )
 
+    
+
     def __init__(self, 
                  necrotic_quant: int = 0, 
                  spirit_quant: int = 0, 

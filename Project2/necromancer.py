@@ -87,7 +87,7 @@ class Necromancer:
 
     undead = property(get_undead)
 
-    def _find_undead(self, id: int) -> Undead | None:
+    def __find_undead(self, id: int) -> Undead | None:
         """
         Find a controlled undead using its identifier.
 
@@ -147,7 +147,7 @@ class Necromancer:
         Returns:
             bool: True if the undead was dismissed, otherwise False.
         """
-        undead = self._find_undead(id)
+        undead = self.__find_undead(id)
 
         if undead is None:
             return False
@@ -166,7 +166,7 @@ class Necromancer:
             bool: True if the undead was found and levelled,
                 otherwise False.
         """
-        undead = self._find_undead(id)
+        undead = self.__find_undead(id)
 
         if undead is None:
             return False

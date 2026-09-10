@@ -1,0 +1,89 @@
+<diagram program="umletino" version="15.1"><zoom_level>5</zoom_level><help_text>Space for diagram notes str</help_text><element><id>UMLClass</id><coordinates><x>120</x><y>25</y><w>170</w><h>135</h></coordinates><panel_attributes>ResourceManager
+--
++ KEYS: tuple
+- resources: dict[str, Resource]
+--
++ init(necrotic_quant: int = 0, spirit_quant: int = 0,
+          bone_quant: int = 0, flesh_quant: int = 0,
+          ectoplasm_quant: int = 0)
++ get_resources(): dict[str, Resource]
++ input_to_dict(quantities: dict[str, int] | tuple) 
+   : dict[str, int] | None
++ collect_resources(quantities)
++ has_resources(quantities): bool
++ spend_resources(quantities): bool</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>340</x><y>25</y><w>160</w><h>115</h></coordinates><panel_attributes>Resource
+--
+- name: str
+- quantity: int
+- description: str
+--
++ init(name: str, description: str, quantity: int = 0)
++ get_name(): str
++ get_description(): str
++ get_quantity(): int
++ add_quantity(quantity: int)
++ str(): str</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>120</x><y>205</y><w>170</w><h>170</h></coordinates><panel_attributes>SummoningRitual
+--
+- name: str
+- undead_name: str
+- starting_health: int
+- starting_power: int
+- costs: dict[str, int]
+--
++ init(name: str, undead_name: str, starting_health: int,
+           starting_power: int, costs: dict[str, int] | tuple)
++ get_name()
++ get_undead_name()
++ get_starting_health()
++ get_starting_power()
++ get_costs()
++ can_perform(resourceManager: ResourceManager): bool
++ perform(resourceManager: ResourceManager): bool
++ summon(id: int): Undead</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>350</x><y>205</y><w>150</w><h>170</h></coordinates><panel_attributes>Undead
+--
++ MIN_HEALTH: int = 1
++ MAX_HEALTH: int = 100
++ MIN_POWER: int = 1
++ MAX_POWER: int = 100
++ MAX_LEVEL: int = 10
++ HEALTH_PER_LEVEL: int = 10
++ POWER_PER_LEVEL: int = 5
+- id
+- name: str
+- health: int
+- power: int
+- level: int
+--
++ init(id, name, health, power)
++ get_id()
++ get_name()
++ get_health()
++ get_power()
++ get_level()
++ level_up()
++ str(): str</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>285</x><y>65</y><w>65</w><h>25</h></coordinates><panel_attributes>lt=&lt;&lt;&lt;&lt;&lt;-
+m1=1
+m2=5
+manages</panel_attributes><additional_attributes>10;20;110;20</additional_attributes></element><element><id>Relation</id><coordinates><x>200</x><y>155</y><w>25</w><h>60</h></coordinates><panel_attributes>lt=.&gt;
+uses</panel_attributes><additional_attributes>10;100;10;10</additional_attributes></element><element><id>Relation</id><coordinates><x>285</x><y>265</y><w>75</w><h>20</h></coordinates><panel_attributes>lt=.&gt;
+creates</panel_attributes><additional_attributes>10;20;130;20</additional_attributes></element><element><id>UMLClass</id><coordinates><x>340</x><y>430</y><w>170</w><h>125</h></coordinates><panel_attributes>Necromancer
+--
++ MAX_UNDEAD: int
+- name: str
+- resources: ResourceManager
+- undead: list[Undead]
+- next_id: int
+--
++ init(name: str, ...)
++ get_name(): str
++ get_resources(): ResourceManager
++ get_undead(): list[Undead]
+- find_undead(id: int): Undead | None
++ summon(ritual: SummoningRitual): Undead | None
++ dismiss(id: int): bool
++ level_up(id: int): bool
++ str(): str</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>420</x><y>370</y><w>35</w><h>70</h></coordinates><panel_attributes>lt=&lt;&lt;&lt;&lt;&lt;-
+m1=1..1
+m2=0..n
+controls</panel_attributes><additional_attributes>10;120;10;10</additional_attributes></element><element><id>Relation</id><coordinates><x>200</x><y>370</y><w>150</w><h>140</h></coordinates><panel_attributes>lt=.&gt;
+uses</panel_attributes><additional_attributes>280;260;10;260;10;10</additional_attributes></element></diagram>
