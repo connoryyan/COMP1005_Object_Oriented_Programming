@@ -13,7 +13,7 @@ class Necromancer {
     + get_resources(): ResourceManager
     + get_undead(): list[Undead]
     - __find_undead(id: int): Undead | None
-    + summon(ritual: SummonRitual): Undead | None
+    + summon(ritual: SummoningRitual): Undead | None
     + dismiss(id: int): bool
     + level_up(id: int): bool
     + __str__(): str
@@ -29,7 +29,7 @@ class ResourceManager {
 
 class Resource
 
-class SummonRitual {
+class SummoningRitual {
     - __name: str
     - __undead_name: str
     - __starting_health: int
@@ -56,8 +56,8 @@ ResourceManager "1" *-- "5" Resource : manages
 
 Necromancer "1" o-- "0..10" Undead : controls
 
-Necromancer ..> SummonRitual : uses
-SummonRitual ..> ResourceManager : uses
-SummonRitual ..> Undead : creates
+Necromancer ..> SummoningRitual : uses
+SummoningRitual ..> ResourceManager : uses
+SummoningRitual ..> Undead : creates
 
 @enduml

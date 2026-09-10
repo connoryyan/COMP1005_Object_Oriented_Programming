@@ -1,19 +1,22 @@
-<diagram program="umletino" version="15.1"><zoom_level>10</zoom_level><help_text>Space for diagram notes str</help_text><element><id>UMLClass</id><coordinates><x>910</x><y>90</y><w>250</w><h>190</h></coordinates><panel_attributes>Account
+<diagram program="umletino" version="15.1"><zoom_level>11</zoom_level><help_text>Space for diagram notes str</help_text><element><id>UMLClass</id><coordinates><x>902</x><y>125</y><w>275</w><h>253</h></coordinates><panel_attributes>Account
 --
-+ id: int
+- id: int
 - type: str
 - balance: float
+- transactions: Transaction[]
 --
 + str(): str
 + repr(): str
++ get_id(): int
 + get_type(): str
 + get_balance(): float
 + deposit(amount: float): bool
 + withdrawal(amount: float): bool
++ get_transactions(): Transaction[]
 + display_balance()
-</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>430</x><y>20</y><w>250</w><h>370</h></coordinates><panel_attributes>Client
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>374</x><y>48</y><w>275</w><h>407</h></coordinates><panel_attributes>Client
 --
-+ id: int
+- id: int
 - name: str
 - is_active: bool
 - preferred_contact: str
@@ -23,6 +26,7 @@
 --
 + str(): str
 + repr(): str
++ get_id(): int
 + get_name(): str
 + set_name(name: str)
 + get_preferred_contact(): str
@@ -36,9 +40,9 @@
 + get_accounts(): Account[]
 + get_preferred_branch(): Branch
 + set_preferred_branch(branch: Branch)
-</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>430</x><y>510</y><w>250</w><h>280</h></coordinates><panel_attributes>Branch
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>374</x><y>587</y><w>275</w><h>308</h></coordinates><panel_attributes>Branch
 --
-+ id: int
+- id: int
 - name: str
 - location: str
 - phone: str
@@ -46,6 +50,7 @@
 --
 + str(): str
 + repr(): str
++ get_id(): int
 + open()
 + close()
 + get_is_open(): bool
@@ -55,30 +60,32 @@
 + set_location(location: str)
 + get_phone(): str
 + set_phone(phone: str)
-</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>920</x><y>540</y><w>250</w><h>240</h></coordinates><panel_attributes>Transaction
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>913</x><y>620</y><w>275</w><h>319</h></coordinates><panel_attributes>Transaction
 --
-+ id: int
+- id: int
 - type: str
 - amount: float
 - description: str
 - status: str
+- resulting_balance: float
 --
 + str(): str
 + repr(): str
++ get_id(): int
 + get_type(): str
 + get_amount(): float
++ get_description(): str
++ set_description(description: str)
 + get_status(): str
 + process(source: Account, destination: Account): bool
 + cancel()
-+ get_description(): str
-+ set_description(description: str)
-</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>540</x><y>380</y><w>80</w><h>150</h></coordinates><panel_attributes>lt=-&gt;
++ get_resulting_balance(): float</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>495</x><y>444</y><w>88</w><h>165</h></coordinates><panel_attributes>lt=-&gt;
 m1=0..*
 m2=0..1
-prefers v</panel_attributes><additional_attributes>10;10;10;130</additional_attributes></element><element><id>Relation</id><coordinates><x>670</x><y>170</y><w>260</w><h>50</h></coordinates><panel_attributes>lt=&lt;&lt;&lt;&lt;-
+prefers v</panel_attributes><additional_attributes>10;10;10;130</additional_attributes></element><element><id>Relation</id><coordinates><x>638</x><y>213</y><w>286</w><h>55</h></coordinates><panel_attributes>lt=&lt;&lt;&lt;&lt;-
 m1=0..1
 m2=0..*
-has &gt;</panel_attributes><additional_attributes>10;20;240;20</additional_attributes></element><element><id>Relation</id><coordinates><x>1030</x><y>270</y><w>70</w><h>290</h></coordinates><panel_attributes>lt=.&gt;
+has &gt;</panel_attributes><additional_attributes>10;20;240;20</additional_attributes></element><element><id>Relation</id><coordinates><x>1034</x><y>367</y><w>66</w><h>275</h></coordinates><panel_attributes>lt=-&gt;&gt;&gt;&gt;&gt;
 m1=0..*
-m2=0..1
-uses ^</panel_attributes><additional_attributes>10;270;10;10</additional_attributes></element></diagram>
+m2=1
+has v</panel_attributes><additional_attributes>10;227;10;12</additional_attributes></element></diagram>

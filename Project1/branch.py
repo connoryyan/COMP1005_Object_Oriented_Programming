@@ -2,11 +2,13 @@ class Branch:
     '''
     Models a single branch of the financial organisation.
 
-    The only public attribute is id. The branch details are private and are
-    accessed through getters and setters.
+    All attributes are private and are exposed through properties. The branch
+    name, location and phone number can be updated through their property
+    setters, while the open/closed state can only change through the
+    behavioural methods open() and close().
 
     Attributes:
-        id (int): The branch's unique identifier.
+        __id (int): The branch's unique identifier.
         __name (str): The branch's name.
         __location (str): The branch's suburb or location.
         __phone (str): The branch's phone number.
@@ -36,57 +38,24 @@ class Branch:
         if not isinstance(is_open, bool):
             is_open = False
 
-        self.id: int | None = id
+        self.__id: int | None = id
         self.__name: str | None = name
         self.__location: str | None = location
         self.__phone: str | None = phone
         self.__is_open: bool = is_open
 
-    def __str__(self) -> str:
+    def get_id(self) -> int | None:
         '''
-        Return a readable description of the branch.
+        Return the identifier of the branch.
 
         Returns:
-            str: A string containing the branch's information.
+            int: The branch identifier.
         '''
-        state = "Open" if self.__is_open else "Closed"
-        return (f"Branch id: {self.id}, Name: {self.__name}, "
-                f"Location: {self.__location}, Phone No.: {self.__phone}, "
-                f"State: {state}")
+        return self.__id
 
-    def __repr__(self) -> str:
-        '''
-        Return an unambiguous string representation of the branch.
+    id = property(get_id)
 
-        Returns:
-            str: A string that reconstructs the branch's state.
-        '''
-        return (f"Branch(id={self.id}, name={self.__name}, "
-                f"location={self.__location}, phone={self.__phone}, "
-                f"is_open={self.__is_open})")
-
-    def open(self) -> None:
-        '''
-        Mark the branch as open for business.
-        '''
-        self.__is_open = True
-
-    def close(self) -> None:
-        '''
-        Mark the branch as closed for business.
-        '''
-        self.__is_open = False
-
-    def get_is_open(self) -> bool:
-        '''
-        Return whether the branch is currently open.
-
-        Returns:
-            bool: True if the branch is open, False otherwise.
-        '''
-        return self.__is_open
-
-    def get_name(self) -> str:
+    def get_name(self) -> str | None:
         '''
         Return the name of the branch.
 
@@ -105,7 +74,9 @@ class Branch:
         if isinstance(name, str):
             self.__name = name
 
-    def get_location(self) -> str:
+    name = property(get_name, set_name)
+
+    def get_location(self) -> str | None:
         '''
         Return the location of the branch.
 
@@ -124,7 +95,9 @@ class Branch:
         if isinstance(location, str):
             self.__location = location
 
-    def get_phone(self) -> str:
+    location = property(get_location, set_location)
+
+    def get_phone(self) -> str | None:
         '''
         Return the phone number of the branch.
 
@@ -142,3 +115,51 @@ class Branch:
         '''
         if isinstance(phone, str):
             self.__phone = phone
+
+    phone = property(get_phone, set_phone)
+
+    def get_is_open(self) -> bool:
+        '''
+        Return whether the branch is currently open.
+
+        Returns:
+            bool: True if the branch is open, False otherwise.
+        '''
+        return self.__is_open
+
+    is_open = property(get_is_open)
+
+    def open(self) -> None:
+        '''
+        Mark the branch as open for business.
+        '''
+        self.__is_open = True
+
+    def close(self) -> None:
+        '''
+        Mark the branch as closed for business.
+        '''
+        self.__is_open = False
+
+    def __str__(self) -> str:
+        '''
+        Return a readable description of the branch.
+
+        Returns:
+            str: A string containing the branch's information.
+        '''
+        state = "Open" if self.__is_open else "Closed"
+        return (f"Branch id: {self.__id}, Name: {self.__name}, "
+                f"Location: {self.__location}, Phone No.: {self.__phone}, "
+                f"State: {state}")
+
+    def __repr__(self) -> str:
+        '''
+        Return an unambiguous string representation of the branch.
+
+        Returns:
+            str: A string that reconstructs the branch's state.
+        '''
+        return (f"Branch(id={self.__id}, name={self.__name}, "
+                f"location={self.__location}, phone={self.__phone}, "
+                f"is_open={self.__is_open})")
