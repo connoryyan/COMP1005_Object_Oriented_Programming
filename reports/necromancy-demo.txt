@@ -1,0 +1,106 @@
+=== Initial Necromancer ===
+Necromancer: Connor
+Resources:
+  Resource name: Necrotic Runes, Quantity: 10, Description: Necrotic runes are a type of runes consisting of spirit, bone, flesh, and miasma runes..
+  Resource name: Spirit Runes, Quantity: 10, Description: Spirit Runes may be more important for spectral summons..
+  Resource name: Bone Runes, Quantity: 10, Description: Bone Runes may be more important for skeletal summons..
+  Resource name: Flesh Runes, Quantity: 10, Description: Flesh Runes may be more important for corpse-based summons..
+  Resource name: Ectoplasm, Quantity: 10, Description: Ectoplasm is used to draw alteration glyphs and for conjuring..
+Controlled Undead: 0/10
+
+
+=== Successful Summons ===
+1: Undead Skeleton Warrior (Level 1) Health: 50/90, Power: 30/70
+2: Vengeful Ghost (Level 1) Health: 40/80, Power: 45/110
+3: Putrid Zombie (Level 1) Health: 70/100, Power: 25/60
+
+=== Attempting Phantom Guardian ===
+Phantom Guardian could not be summoned.
+
+=== Collecting More Resources ===
+Resource name: Necrotic Runes, Quantity: 10, Description: Necrotic runes are a type of runes consisting of spirit, bone, flesh, and miasma runes..
+Resource name: Spirit Runes, Quantity: 8, Description: Spirit Runes may be more important for spectral summons..
+Resource name: Bone Runes, Quantity: 8, Description: Bone Runes may be more important for skeletal summons..
+Resource name: Flesh Runes, Quantity: 9, Description: Flesh Runes may be more important for corpse-based summons..
+Resource name: Ectoplasm, Quantity: 7, Description: Ectoplasm is used to draw alteration glyphs and for conjuring..
+
+=== Attempting Phantom Guardian Again ===
+4: Phantom Guardian (Level 1) Health: 90/140, Power: 70/100
+
+=== Specialised Undead Hierarchy ===
+Summon class declared by each ritual:
+  Skeleton Ritual: SkeletonWarrior
+  Vengeful Ghost Ritual: VengefulGhost
+  Putrid Zombie Ritual: PutridZombie
+  Phantom Guardian Ritual: PhantomGuardian
+
+Summoned undead and their behaviour:
+
+1: Undead Skeleton Warrior (Level 1) Health: 50/90, Power: 30/70
+  class: SkeletonWarrior
+  isinstance Undead: True
+  isinstance WarriorUndead: True
+  isinstance CursedUndead: False
+  stat limits: health 10-90, power 10-70
+  command(): Undead Skeleton Warrior (Level 1) awaits your command. It grips its weapon, ready to strike. Its bones clatter as it charges.
+
+2: Vengeful Ghost (Level 1) Health: 40/80, Power: 45/110
+  class: VengefulGhost
+  isinstance Undead: True
+  isinstance WarriorUndead: False
+  isinstance CursedUndead: True
+  stat limits: health 10-80, power 20-110
+  command(): Vengeful Ghost (Level 1) awaits your command. Dark energy coils around its body. It wails for vengeance and fades from sight.
+
+3: Putrid Zombie (Level 1) Health: 70/100, Power: 25/60
+  class: PutridZombie
+  isinstance Undead: True
+  isinstance WarriorUndead: False
+  isinstance CursedUndead: False
+  stat limits: health 20-100, power 5-60
+  command(): Putrid Zombie (Level 1) awaits your command.
+
+4: Phantom Guardian (Level 1) Health: 90/140, Power: 70/100
+  class: PhantomGuardian
+  isinstance Undead: True
+  isinstance WarriorUndead: True
+  isinstance CursedUndead: False
+  stat limits: health 30-140, power 20-100
+  command(): Phantom Guardian (Level 1) awaits your command. It grips its weapon, ready to strike.
+
+Levelling a summon with the inherited level_up():
+  before: 4: Phantom Guardian (Level 1) Health: 90/140, Power: 70/100
+  after:  4: Phantom Guardian (Level 3) Health: 110/140, Power: 80/100
+
+=== Level Up ===
+Before:
+1: Undead Skeleton Warrior (Level 1) Health: 50/90, Power: 30/70
+After:
+1: Undead Skeleton Warrior (Level 2) Health: 60/90, Power: 35/70
+
+=== Dismiss Undead ===
+Dismissing undead with ID 2...
+Dismiss successful: True
+
+=== Death Knight: Multiple Inheritance ===
+5: Death Knight (Level 1) Health: 100/200, Power: 80/160
+MRO: ['DeathKnight', 'WarriorUndead', 'CursedUndead', 'Undead', 'object']
+Fights using direct martial combat.
+Fights using direct martial combat. At the same time, Fights using cursed supernatural powers.
+Death Knight (Level 1) awaits your command. Dark energy coils around its body. It grips its weapon, ready to strike. Knight.
+After levelling: 5: Death Knight (Level 2) Health: 120/200, Power: 90/160
+
+=== Final Necromancer ===
+Necromancer: Connor
+Resources:
+  Resource name: Necrotic Runes, Quantity: 18, Description: Necrotic runes are a type of runes consisting of spirit, bone, flesh, and miasma runes..
+  Resource name: Spirit Runes, Quantity: 15, Description: Spirit Runes may be more important for spectral summons..
+  Resource name: Bone Runes, Quantity: 17, Description: Bone Runes may be more important for skeletal summons..
+  Resource name: Flesh Runes, Quantity: 21, Description: Flesh Runes may be more important for corpse-based summons..
+  Resource name: Ectoplasm, Quantity: 13, Description: Ectoplasm is used to draw alteration glyphs and for conjuring..
+Controlled Undead: 4/10
+  1: Undead Skeleton Warrior (Level 2) Health: 60/90, Power: 35/70
+  3: Putrid Zombie (Level 1) Health: 70/100, Power: 25/60
+  4: Phantom Guardian (Level 3) Health: 110/140, Power: 80/100
+  5: Death Knight (Level 2) Health: 120/200, Power: 90/160
+

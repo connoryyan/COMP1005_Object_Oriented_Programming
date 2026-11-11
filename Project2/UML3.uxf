@@ -1,89 +1,161 @@
-<diagram program="umletino" version="15.1"><zoom_level>5</zoom_level><help_text>Space for diagram notes str</help_text><element><id>UMLClass</id><coordinates><x>120</x><y>25</y><w>170</w><h>135</h></coordinates><panel_attributes>ResourceManager
---
-+ KEYS: tuple
-- resources: dict[str, Resource]
---
-+ init(necrotic_quant: int = 0, spirit_quant: int = 0,
-          bone_quant: int = 0, flesh_quant: int = 0,
-          ectoplasm_quant: int = 0)
-+ get_resources(): dict[str, Resource]
-+ input_to_dict(quantities: dict[str, int] | tuple) 
-   : dict[str, int] | None
-+ collect_resources(quantities)
-+ has_resources(quantities): bool
-+ spend_resources(quantities): bool</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>340</x><y>25</y><w>160</w><h>115</h></coordinates><panel_attributes>Resource
+<diagram program="umletino" version="15.1"><zoom_level>6</zoom_level><help_text>Layout: resources and summoning above; Undead inheritance below. DeathKnight combines WarriorUndead and CursedUndead. Membership, visibility and relationships are retained from UML3.</help_text><element><id>UMLClass</id><coordinates><x>295</x><y>237</y><w>144</w><h>120</h></coordinates><panel_attributes>Resource
 --
 - name: str
-- quantity: int
 - description: str
+- quantity: int
++ MIN_QUANTITY = 0
 --
-+ init(name: str, description: str, quantity: int = 0)
++ __init__(name: str, description: str,
+  quantity: int=0)
 + get_name(): str
 + get_description(): str
 + get_quantity(): int
-+ add_quantity(quantity: int)
-+ str(): str</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>120</x><y>205</y><w>170</w><h>170</h></coordinates><panel_attributes>SummoningRitual
++ add_quantity(quantity)
++ __str__()</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>547</x><y>225</y><w>228</w><h>174</h></coordinates><panel_attributes>ResourceManager
+--
+- resources: dict[str, Resource]
++ KEYS = ('necrotic_runes', 'spirit_runes', 'bone_runes',
+  'flesh_runes', 'ectoplasm')
+--
++ __init__(necrotic_quant: int=0, spirit_quant: int=0,
+  bone_quant: int=0, flesh_quant: int=0, ectoplasm_quant:
+  int=0)
++ get_resources(): dict[str, Resource]
++ input_to_dict(quantities: dict[str, int] | tuple[int, int,
+  int, int, int]): dict[str, int] | None
++ collect_resources(quantities: dict[str, int] | tuple[int,
+  int, int, int, int])
++ has_resources(quantities: dict[str, int] | tuple[int, int,
+  int, int, int]): bool
++ spend_resources(quantities: dict[str, int] | tuple[int,
+  int, int, int, int]): bool
++ __str__(): str</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>979</x><y>225</y><w>216</w><h>282</h></coordinates><panel_attributes>SummoningRitual
 --
 - name: str
 - undead_name: str
 - starting_health: int
 - starting_power: int
 - costs: dict[str, int]
+- summon_class: type[Undead]
 --
-+ init(name: str, undead_name: str, starting_health: int,
-           starting_power: int, costs: dict[str, int] | tuple)
++ __init__(name: str, undead_name: str, starting_health: int,
+  starting_power: int, costs: dict[str, int] | tuple[int, int, int,
+  int, int], summon_class: type[Undead]=Undead)
++ get_summon_class(): type[Undead]
 + get_name()
 + get_undead_name()
 + get_starting_health()
 + get_starting_power()
 + get_costs()
-+ can_perform(resourceManager: ResourceManager): bool
-+ perform(resourceManager: ResourceManager): bool
-+ summon(id: int): Undead</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>350</x><y>205</y><w>150</w><h>170</h></coordinates><panel_attributes>Undead
++ can_perform(resource_manager: ResourceManager): bool
++ perform(resource_manager: ResourceManager): bool
++ create_summon(id: int): Undead
++ summon(id: int): Undead</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>559</x><y>555</y><w>204</w><h>174</h></coordinates><panel_attributes>Necromancer
 --
-+ MIN_HEALTH: int = 1
-+ MAX_HEALTH: int = 100
-+ MIN_POWER: int = 1
-+ MAX_POWER: int = 100
-+ MAX_LEVEL: int = 10
-+ HEALTH_PER_LEVEL: int = 10
-+ POWER_PER_LEVEL: int = 5
-- id
 - name: str
-- health: int
-- power: int
-- level: int
+- resources: ResourceManager
+- undead: list[Undead]
+- next_id: int
++ MAX_UNDEAD = 10
 --
-+ init(id, name, health, power)
++ __init__(name: str, necrotic_quant: int=0, spirit_quant:
+  int=0, bone_quant: int=0, flesh_quant: int=0,
+  ectoplasm_quant: int=0): None
++ get_name(): str
++ get_resources(): ResourceManager
++ get_undead(): list[Undead]
+- __find_undead(id: int): Undead | None
++ summon(ritual: SummoningRitual): Undead | None
++ dismiss(id: int): bool
++ level_up(id: int): bool
++ command(id: int): str | None
++ __str__(): str</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>1015</x><y>615</y><w>150</w><h>222</h></coordinates><panel_attributes>Undead
+--
+- id: int
+- name: str
+# health: int
+# power: int
+# level: int
++ MIN_HEALTH = 1
++ MAX_HEALTH = 100
++ MIN_POWER = 1
++ MAX_POWER = 100
++ MAX_LEVEL = 10
++ HEALTH_PER_LEVEL = 10
++ POWER_PER_LEVEL = 5
+--
++ __init__(id, name, health, power)
 + get_id()
 + get_name()
 + get_health()
 + get_power()
 + get_level()
 + level_up()
-+ str(): str</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>285</x><y>65</y><w>65</w><h>25</h></coordinates><panel_attributes>lt=&lt;&lt;&lt;&lt;&lt;-
++ command(): str
+# _clamp_stats(): None
++ __str__(): str</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>865</x><y>981</y><w>132</w><h>72</h></coordinates><panel_attributes>WarriorUndead
+--
++ __init__(id, name, health, power)
++ command(): str
++ combat_style(): str</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>1363</x><y>981</y><w>132</w><h>72</h></coordinates><panel_attributes>CursedUndead
+--
++ __init__(id, name, health, power)
++ command(): str
++ combat_style(): str</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>1033</x><y>981</y><w>132</w><h>72</h></coordinates><panel_attributes>PutridZombie
+--
++ MIN_HEALTH = 20
++ MAX_HEALTH = 100
++ MIN_POWER = 5
++ MAX_POWER = 60
+--
++ __init__(id, name, health, power)</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>685</x><y>1209</y><w>132</w><h>78</h></coordinates><panel_attributes>SkeletonWarrior
+--
++ MIN_HEALTH = 10
++ MAX_HEALTH = 90
++ MIN_POWER = 10
++ MAX_POWER = 70
+--
++ __init__(id, name, health, power)
++ command(): str</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>883</x><y>1215</y><w>126</w><h>72</h></coordinates><panel_attributes>PhantomGuardian
+--
++ MIN_HEALTH = 30
++ MAX_HEALTH = 140
++ MIN_POWER = 20
++ MAX_POWER = 100
+--
++ __init__(id, name, health, power)</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>1147</x><y>1179</y><w>186</w><h>138</h></coordinates><panel_attributes>DeathKnight
+--
++ MIN_HEALTH = 30
++ MAX_HEALTH = 200
++ MIN_POWER = 30
++ MAX_POWER = 160
++ HEALTH_PER_LEVEL = 20
++ POWER_PER_LEVEL = 10
++ STARTING_HEALTH = 100
++ STARTING_POWER = 80
+--
++ __init__(id, name='Death Knight', health=None,
+  power=None)
++ combat_style()
++ compare_combat_styles()
++ command()</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>1399</x><y>1203</y><w>132</w><h>84</h></coordinates><panel_attributes>VengefulGhost
+--
++ MIN_HEALTH = 10
++ MAX_HEALTH = 80
++ MIN_POWER = 20
++ MAX_POWER = 110
+--
++ __init__(id, name, health, power)
++ command(): str</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>433</x><y>291</y><w>126</w><h>30</h></coordinates><panel_attributes>lt=&lt;&lt;&lt;&lt;&lt;-
 m1=1
 m2=5
-manages</panel_attributes><additional_attributes>10;20;110;20</additional_attributes></element><element><id>Relation</id><coordinates><x>200</x><y>155</y><w>25</w><h>60</h></coordinates><panel_attributes>lt=.&gt;
-uses</panel_attributes><additional_attributes>10;100;10;10</additional_attributes></element><element><id>Relation</id><coordinates><x>285</x><y>265</y><w>75</w><h>20</h></coordinates><panel_attributes>lt=.&gt;
-creates</panel_attributes><additional_attributes>10;20;130;20</additional_attributes></element><element><id>UMLClass</id><coordinates><x>340</x><y>430</y><w>170</w><h>125</h></coordinates><panel_attributes>Necromancer
---
-+ MAX_UNDEAD: int
-- name: str
-- resources: ResourceManager
-- undead: list[Undead]
-- next_id: int
---
-+ init(name: str, ...)
-+ get_name(): str
-+ get_resources(): ResourceManager
-+ get_undead(): list[Undead]
-- find_undead(id: int): Undead | None
-+ summon(ritual: SummoningRitual): Undead | None
-+ dismiss(id: int): bool
-+ level_up(id: int): bool
-+ str(): str</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>420</x><y>370</y><w>35</w><h>70</h></coordinates><panel_attributes>lt=&lt;&lt;&lt;&lt;&lt;-
-m1=1..1
-m2=0..n
-controls</panel_attributes><additional_attributes>10;120;10;10</additional_attributes></element><element><id>Relation</id><coordinates><x>200</x><y>370</y><w>150</w><h>140</h></coordinates><panel_attributes>lt=.&gt;
-uses</panel_attributes><additional_attributes>280;260;10;260;10;10</additional_attributes></element></diagram>
+owns</panel_attributes><additional_attributes>190;20;10;20</additional_attributes></element><element><id>Relation</id><coordinates><x>649</x><y>393</y><w>36</w><h>174</h></coordinates><panel_attributes>lt=&lt;&lt;&lt;&lt;&lt;-
+m1=1
+m2=1
+owns</panel_attributes><additional_attributes>10;270;10;10</additional_attributes></element><element><id>Relation</id><coordinates><x>769</x><y>309</y><w>222</w><h>24</h></coordinates><panel_attributes>lt=.&gt;
+checks / spends</panel_attributes><additional_attributes>350;20;10;20</additional_attributes></element><element><id>Relation</id><coordinates><x>757</x><y>501</y><w>306</w><h>114</h></coordinates><panel_attributes>lt=.&gt;
+uses</panel_attributes><additional_attributes>10;170;490;170;490;10</additional_attributes></element><element><id>Relation</id><coordinates><x>1117</x><y>507</y><w>42</w><h>120</h></coordinates><panel_attributes>lt=.&gt;
+creates</panel_attributes><additional_attributes>10;10;10;180</additional_attributes></element><element><id>Relation</id><coordinates><x>757</x><y>687</y><w>270</w><h>30</h></coordinates><panel_attributes>lt=&lt;&lt;&lt;&lt;-
+m1=1
+m2=0..10
+controls</panel_attributes><additional_attributes>10;20;430;20</additional_attributes></element><element><id>Relation</id><coordinates><x>934</x><y>831</y><w>114</w><h>162</h></coordinates><panel_attributes>lt=&lt;&lt;-</panel_attributes><additional_attributes>165;10;165;180;10;180;10;250</additional_attributes></element><element><id>Relation</id><coordinates><x>1141</x><y>831</y><w>306</w><h>162</h></coordinates><panel_attributes>lt=&lt;&lt;-</panel_attributes><additional_attributes>10;10;10;180;485;180;485;250</additional_attributes></element><element><id>Relation</id><coordinates><x>1087</x><y>831</y><w>24</w><h>162</h></coordinates><panel_attributes>lt=&lt;&lt;-</panel_attributes><additional_attributes>10;10;15;250</additional_attributes></element><element><id>Relation</id><coordinates><x>742</x><y>1047</y><w>180</w><h>174</h></coordinates><panel_attributes>lt=&lt;&lt;-</panel_attributes><additional_attributes>275;10;275;140;10;140;10;270</additional_attributes></element><element><id>Relation</id><coordinates><x>928</x><y>1047</y><w>24</w><h>180</h></coordinates><panel_attributes>lt=&lt;&lt;-</panel_attributes><additional_attributes>15;10;20;280</additional_attributes></element><element><id>Relation</id><coordinates><x>1447</x><y>1047</y><w>24</w><h>168</h></coordinates><panel_attributes>lt=&lt;&lt;-</panel_attributes><additional_attributes>10;10;15;260</additional_attributes></element><element><id>Relation</id><coordinates><x>961</x><y>1047</y><w>228</w><h>144</h></coordinates><panel_attributes>lt=&lt;&lt;-</panel_attributes><additional_attributes>10;10;10;130;360;130;360;220</additional_attributes></element><element><id>Relation</id><coordinates><x>1291</x><y>1047</y><w>126</w><h>144</h></coordinates><panel_attributes>lt=&lt;&lt;-</panel_attributes><additional_attributes>190;10;190;90;10;90;10;220</additional_attributes></element></diagram>

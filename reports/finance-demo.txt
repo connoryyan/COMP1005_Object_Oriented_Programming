@@ -1,0 +1,114 @@
+============================================================
+Client integration
+============================================================
+[INFO] Connor Yan's contact information has been changed to updated@example.com.
+[INFO] Tianyi Zhao's contact information has been changed to new-contact@example.com.
+Information of Client #3
+    Name: Third Client
+    Active: Yes
+    Preferred contact method: phone
+    Contact: 0400 000 003
+    Preferred branch: None
+    Accounts: EverydayAccount #3, Name: Daily expenses, Balance: $0.00
+Client 1: Information of Client #1
+    Name: Connor Yan
+    Active: Yes
+    Preferred contact method: email
+    Contact: updated@example.com
+    Preferred branch: Branch id: 1, Name: Firle Branch, Location: Firle, Phone No.: 08 8123 4567, State: Open
+    Accounts: SavingsAccount #1, Name: Savings, Balance: $0.00
+              EverydayAccount #2, Name: Everyday, Balance: $0.00
+Client 1 accounts: {1: SavingsAccount(id=1, name='Savings', balance=0.0), 2: EverydayAccount(id=2, name='Everyday', balance=0.0)}
+Client 1 preferred branch: Branch id: 1, Name: Firle Branch, Location: Firle, Phone No.: 08 8123 4567, State: Open
+[PASS] Client can store specialised Account objects.
+
+============================================================
+Account behaviour
+============================================================
+Account is abstract; concrete account types are used below.
+[PASS] Common Account behaviour works.
+
+============================================================
+SavingsAccount
+============================================================
+Valid withdrawal of $200:
+Invalid withdrawal of $250:
+[INFO] Account 1: $250.00 would reduce balance below $100.00.
+Interest rate: 0.05
+Minimum balance: $100.0
+Final balance: $300.0
+[PASS] SavingsAccount withdrawal rule works.
+
+============================================================
+EverydayAccount
+============================================================
+Valid withdrawal of $500:
+Invalid withdrawal of $1200:
+[INFO] Account 2: $1200.00 exceeds withdrawal limit $1000.00.
+Maximum withdrawal: $1000.0
+Final balance: $700.0
+[PASS] EverydayAccount withdrawal rule works.
+
+============================================================
+Polymorphism
+============================================================
+Withdrawing $1200 from each account:
+[INFO] Account 2: $1200.00 exceeds withdrawal limit $1000.00.
+SavingsAccount: $300.0
+EverydayAccount: $1500.0
+[PASS] Polymorphic withdrawal uses specialised rules.
+
+============================================================
+Transaction
+============================================================
+[PASS] Transaction filtering works.
+Transaction count: 2
+  Information of Transaction #1
+- Type: Deposit
+- Amount: $500.0
+- Resulting balance: $500.0
+- Status: Processed
+  Information of Transaction #2
+- Type: Withdraw
+- Amount: $100.0
+- Resulting balance: $400.0
+- Status: Processed
+[INFO] Account 1: invalid amount -50.0.
+[INFO] Account 1: $1000.00 exceeds balance $400.00.
+[INFO] Account 1: invalid amount 0.0.
+[PASS] Failed operations create no transactions.
+[PASS] Transaction collection cannot be modified externally.
+
+============================================================
+Read-only properties
+============================================================
+Account id: 1
+Account balance: $500.0
+[PASS] Account id and balance have read-only properties.
+
+============================================================
+Branch operations
+============================================================
+Branch id: 1, Name: Firle Branch, Location: Firle, Phone No.: 08 8123 4567, State: Open
+Branch 1 open: False
+Branch 2 open: True
+Branch 3 phone: 08 8999 8888
+[PASS] Branch operations work.
+
+============================================================
+Object independence
+============================================================
+Client 1 name: Connor Yan Jr.
+Client 2 name: Tianyi Zhao
+Account 1 balance: $550.0
+Account 2 balance: $1000.0
+[PASS] Objects maintain independent state.
+
+[INFO] Account 99: $1001.00 exceeds withdrawal limit $1000.00.
+Handled: WithdrawalLimitError Account 99: $1001.00 exceeds withdrawal limit $1000.00.
+[INFO] Account 99: invalid amount nan.
+[INFO] Client 99: account 404 not found.
+Continued successfully: EverydayAccount #99, Name: Everyday, Balance: $1400.00
+============================================================
+All tests passed.
+============================================================

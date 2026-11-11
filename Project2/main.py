@@ -1,5 +1,15 @@
 from necromancer import Necromancer
 from ritual import SummoningRitual
+from undead import (
+    CursedUndead,
+    DeathKnight,
+    PhantomGuardian,
+    PutridZombie,
+    SkeletonWarrior,
+    Undead,
+    VengefulGhost,
+    WarriorUndead
+)
 
 
 def main() -> None:
@@ -27,7 +37,8 @@ def main() -> None:
             "bone_runes": 5,
             "flesh_runes": 0,
             "ectoplasm": 2
-        }
+        },
+        summon_class=SkeletonWarrior
     )
 
     ghost_ritual = SummoningRitual(
@@ -41,7 +52,8 @@ def main() -> None:
             "bone_runes": 0,
             "flesh_runes": 0,
             "ectoplasm": 3
-        }
+        },
+        summon_class=VengefulGhost
     )
 
     zombie_ritual = SummoningRitual(
@@ -55,7 +67,8 @@ def main() -> None:
             "bone_runes": 2,
             "flesh_runes": 6,
             "ectoplasm": 3
-        }
+        },
+        summon_class=PutridZombie
     )
 
     guardian_ritual = SummoningRitual(
@@ -69,7 +82,8 @@ def main() -> None:
             "bone_runes": 3,
             "flesh_runes": 0,
             "ectoplasm": 6
-        }
+        },
+        summon_class=PhantomGuardian
     )
 
     print("=== Initial Necromancer ===")
@@ -116,6 +130,42 @@ def main() -> None:
     else:
         print(guardian)
 
+    print("\n=== Specialised Undead Hierarchy ===")
+
+    print("Summon class declared by each ritual:")
+
+    for ritual in (skeleton_ritual, ghost_ritual, zombie_ritual,
+                   guardian_ritual):
+        print(f"  {ritual.name}: {ritual.summon_class.__name__}")
+
+    print("\nSummoned undead and their behaviour:")
+
+    for undead in (skeleton, ghost, zombie, guardian):
+        if undead is None:
+            continue
+
+        print(f"\n{undead}")
+        print(f"  class: {type(undead).__name__}")
+        print(f"  isinstance Undead: {isinstance(undead, Undead)}")
+        print(f"  isinstance WarriorUndead: "
+              f"{isinstance(undead, WarriorUndead)}")
+        print(f"  isinstance CursedUndead: "
+              f"{isinstance(undead, CursedUndead)}")
+        print(f"  stat limits: health {undead.MIN_HEALTH}-"
+              f"{undead.MAX_HEALTH}, power {undead.MIN_POWER}-"
+              f"{undead.MAX_POWER}")
+        print(f"  command(): {undead.command()}")
+
+    print("\nLevelling a summon with the inherited level_up():")
+
+    if guardian is not None:
+        print(f"  before: {guardian}")
+
+        necromancer.level_up(guardian.id)
+        necromancer.level_up(guardian.id)
+
+        print(f"  after:  {guardian}")
+
     print("\n=== Level Up ===")
 
     if skeleton is not None:
@@ -135,6 +185,26 @@ def main() -> None:
         success = necromancer.dismiss(ghost.id)
 
         print(f"Dismiss successful: {success}")
+
+    print("\n=== Death Knight: Multiple Inheritance ===")
+    necromancer.resources.collect_resources((20, 20, 20, 20, 20))
+    death_ritual = SummoningRitual(
+        "Death Knight Ritual", "Death Knight",
+        DeathKnight.STARTING_HEALTH, DeathKnight.STARTING_POWER,
+        (8, 8, 8, 8, 8), summon_class=DeathKnight,
+    )
+    knight = necromancer.summon(death_ritual)
+    assert isinstance(knight, DeathKnight)
+    assert isinstance(knight, WarriorUndead)
+    assert isinstance(knight, CursedUndead)
+    assert isinstance(knight, Undead)
+    print(knight)
+    print("MRO:", [cls.__name__ for cls in DeathKnight.mro()])
+    print(knight.combat_style())
+    print(knight.compare_combat_styles())
+    print(necromancer.command(knight.id))
+    assert necromancer.level_up(knight.id)
+    print("After levelling:", knight)
 
     print("\n=== Final Necromancer ===")
     print(necromancer)

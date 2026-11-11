@@ -1,0 +1,451 @@
+<?xml version='1.0' encoding='utf-8'?>
+<diagram program="umletino" version="15.1">
+  <zoom_level>6</zoom_level>
+  <help_text>Layout: resources and summoning above; Undead inheritance below. DeathKnight combines WarriorUndead and CursedUndead. Membership, visibility and relationships are retained from UML3.</help_text>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>24</x>
+      <y>36</y>
+      <w>258</w>
+      <h>180</h>
+    </coordinates>
+    <panel_attributes>Resource
+--
+- name: str
+- description: str
+- quantity: int
++ MIN_QUANTITY = 0
+--
++ __init__(name: str, description: str,
+  quantity: int=0)
++ get_name(): str
++ get_description(): str
++ get_quantity(): int
++ add_quantity(quantity)
++ __str__()</panel_attributes>
+    <additional_attributes />
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>324</x>
+      <y>36</y>
+      <w>342</w>
+      <h>246</h>
+    </coordinates>
+    <panel_attributes>ResourceManager
+--
+- resources: dict[str, Resource]
++ KEYS = ('necrotic_runes', 'spirit_runes', 'bone_runes',
+  'flesh_runes', 'ectoplasm')
+--
++ __init__(necrotic_quant: int=0, spirit_quant: int=0,
+  bone_quant: int=0, flesh_quant: int=0, ectoplasm_quant:
+  int=0)
++ get_resources(): dict[str, Resource]
++ input_to_dict(quantities: dict[str, int] | tuple[int, int,
+  int, int, int]): dict[str, int] | None
++ collect_resources(quantities: dict[str, int] | tuple[int,
+  int, int, int, int])
++ has_resources(quantities: dict[str, int] | tuple[int, int,
+  int, int, int]): bool
++ spend_resources(quantities: dict[str, int] | tuple[int,
+  int, int, int, int]): bool
++ __str__(): str</panel_attributes>
+    <additional_attributes />
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>822</x>
+      <y>36</y>
+      <w>390</w>
+      <h>282</h>
+    </coordinates>
+    <panel_attributes>SummoningRitual
+--
+- name: str
+- undead_name: str
+- starting_health: int
+- starting_power: int
+- costs: dict[str, int]
+- summon_class: type[Undead]
+--
++ __init__(name: str, undead_name: str, starting_health: int,
+  starting_power: int, costs: dict[str, int] | tuple[int, int, int,
+  int, int], summon_class: type[Undead]=Undead)
++ get_summon_class(): type[Undead]
++ get_name()
++ get_undead_name()
++ get_starting_health()
++ get_starting_power()
++ get_costs()
++ can_perform(resource_manager: ResourceManager): bool
++ perform(resource_manager: ResourceManager): bool
++ create_summon(id: int): Undead
++ summon(id: int): Undead</panel_attributes>
+    <additional_attributes />
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>324</x>
+      <y>366</y>
+      <w>342</w>
+      <h>258</h>
+    </coordinates>
+    <panel_attributes>Necromancer
+--
+- name: str
+- resources: ResourceManager
+- undead: list[Undead]
+- next_id: int
++ MAX_UNDEAD = 10
+--
++ __init__(name: str, necrotic_quant: int=0, spirit_quant:
+  int=0, bone_quant: int=0, flesh_quant: int=0,
+  ectoplasm_quant: int=0): None
++ get_name(): str
++ get_resources(): ResourceManager
++ get_undead(): list[Undead]
+- __find_undead(id: int): Undead | None
++ summon(ritual: SummoningRitual): Undead | None
++ dismiss(id: int): bool
++ level_up(id: int): bool
++ command(id: int): str | None
++ __str__(): str</panel_attributes>
+    <additional_attributes />
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>822</x>
+      <y>420</y>
+      <w>390</w>
+      <h>318</h>
+    </coordinates>
+    <panel_attributes>Undead
+--
+- id: int
+- name: str
+# health: int
+# power: int
+# level: int
++ MIN_HEALTH = 1
++ MAX_HEALTH = 100
++ MIN_POWER = 1
++ MAX_POWER = 100
++ MAX_LEVEL = 10
++ HEALTH_PER_LEVEL = 10
++ POWER_PER_LEVEL = 5
+--
++ __init__(id, name, health, power)
++ get_id()
++ get_name()
++ get_health()
++ get_power()
++ get_level()
++ level_up()
++ command(): str
+# _clamp_stats(): None
++ __str__(): str</panel_attributes>
+    <additional_attributes />
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>648</x>
+      <y>792</y>
+      <w>270</w>
+      <h>72</h>
+    </coordinates>
+    <panel_attributes>WarriorUndead
+--
++ __init__(id, name, health, power)
++ command(): str
++ combat_style(): str</panel_attributes>
+    <additional_attributes />
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1140</x>
+      <y>792</y>
+      <w>270</w>
+      <h>72</h>
+    </coordinates>
+    <panel_attributes>CursedUndead
+--
++ __init__(id, name, health, power)
++ command(): str
++ combat_style(): str</panel_attributes>
+    <additional_attributes />
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1500</x>
+      <y>792</y>
+      <w>270</w>
+      <h>108</h>
+    </coordinates>
+    <panel_attributes>PutridZombie
+--
++ MIN_HEALTH = 20
++ MAX_HEALTH = 100
++ MIN_POWER = 5
++ MAX_POWER = 60
+--
++ __init__(id, name, health, power)</panel_attributes>
+    <additional_attributes />
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>60</x>
+      <y>990</y>
+      <w>270</w>
+      <h>120</h>
+    </coordinates>
+    <panel_attributes>SkeletonWarrior
+--
++ MIN_HEALTH = 10
++ MAX_HEALTH = 90
++ MIN_POWER = 10
++ MAX_POWER = 70
+--
++ __init__(id, name, health, power)
++ command(): str</panel_attributes>
+    <additional_attributes />
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>396</x>
+      <y>990</y>
+      <w>270</w>
+      <h>108</h>
+    </coordinates>
+    <panel_attributes>PhantomGuardian
+--
++ MIN_HEALTH = 30
++ MAX_HEALTH = 140
++ MIN_POWER = 20
++ MAX_POWER = 100
+--
++ __init__(id, name, health, power)</panel_attributes>
+    <additional_attributes />
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>924</x>
+      <y>990</y>
+      <w>330</w>
+      <h>204</h>
+    </coordinates>
+    <panel_attributes>DeathKnight
+--
++ MIN_HEALTH = 30
++ MAX_HEALTH = 200
++ MIN_POWER = 30
++ MAX_POWER = 160
++ HEALTH_PER_LEVEL = 20
++ POWER_PER_LEVEL = 10
++ STARTING_HEALTH = 100
++ STARTING_POWER = 80
+--
++ __init__(id, name='Death Knight', health=None,
+  power=None)
++ combat_style()
++ compare_combat_styles()
++ command()</panel_attributes>
+    <additional_attributes />
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1446</x>
+      <y>990</y>
+      <w>270</w>
+      <h>120</h>
+    </coordinates>
+    <panel_attributes>VengefulGhost
+--
++ MIN_HEALTH = 10
++ MAX_HEALTH = 80
++ MIN_POWER = 20
++ MAX_POWER = 110
+--
++ __init__(id, name, health, power)
++ command(): str</panel_attributes>
+    <additional_attributes />
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>276</x>
+      <y>108</y>
+      <w>60</w>
+      <h>18</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;&lt;-
+m1=1
+m2=5
+owns</panel_attributes>
+    <additional_attributes>80;10;10;10</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>426</x>
+      <y>276</y>
+      <w>18</w>
+      <h>102</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;&lt;-
+m1=1
+m2=1
+owns</panel_attributes>
+    <additional_attributes>10;150;10;10</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>660</x>
+      <y>126</y>
+      <w>174</w>
+      <h>18</h>
+    </coordinates>
+    <panel_attributes>lt=.&gt;
+checks / spends</panel_attributes>
+    <additional_attributes>270;10;10;10</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>660</x>
+      <y>312</y>
+      <w>246</w>
+      <h>114</h>
+    </coordinates>
+    <panel_attributes>lt=.&gt;
+uses</panel_attributes>
+    <additional_attributes>10;170;150;170;150;50;390;50;390;10</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1116</x>
+      <y>312</y>
+      <w>18</w>
+      <h>120</h>
+    </coordinates>
+    <panel_attributes>lt=.&gt;
+creates</panel_attributes>
+    <additional_attributes>10;10;10;180</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>660</x>
+      <y>504</y>
+      <w>174</w>
+      <h>18</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;-
+m1=1
+m2=0..10
+controls</panel_attributes>
+    <additional_attributes>10;10;270;10</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>777</x>
+      <y>732</y>
+      <w>201</w>
+      <h>72</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>315;10;315;30;10;30;10;100</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1062</x>
+      <y>732</y>
+      <w>225</w>
+      <h>72</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>10;10;10;30;355;30;355;100</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1206</x>
+      <y>576</y>
+      <w>441</w>
+      <h>228</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>10;10;400;10;400;300;715;300;715;360</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>189</x>
+      <y>858</y>
+      <w>537</w>
+      <h>144</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>875;10;875;140;10;140;10;220</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>525</x>
+      <y>858</y>
+      <w>267</w>
+      <h>144</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>425;10;425;170;10;170;10;220</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1338</x>
+      <y>858</y>
+      <w>255</w>
+      <h>144</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>10;10;10;140;405;140;405;220</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>870</x>
+      <y>858</y>
+      <w>162</w>
+      <h>144</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>10;10;10;130;250;220</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1152</x>
+      <y>858</y>
+      <w>42</w>
+      <h>144</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>50;10;50;130;10;220</additional_attributes>
+  </element>
+</diagram>

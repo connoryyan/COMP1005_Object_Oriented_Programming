@@ -16,7 +16,8 @@ class Product:
 
     def __str__(self):
         if self.name is not None:
-            return f"Product ID: {self.ID}, Rank: {self.__rank}, Name: {self.name}"
+            return (f"Product ID: {self.ID}, Rank: {self.__rank}, "
+                    f"Name: {self.name}")
         else:
             return f"Product ID: {self.ID}, Rank: {self.__rank}"
 

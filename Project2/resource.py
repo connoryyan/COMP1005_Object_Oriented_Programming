@@ -2,9 +2,11 @@ def check_int(num) -> bool:
     return (isinstance(num, int)
             and not isinstance(num, bool))
 
+
 def check_unsigned_int(num) -> bool:
-    return (check_int(num) 
+    return (check_int(num)
             and num >= 0)
+
 
 class Resource:
     '''
@@ -15,7 +17,8 @@ class Resource:
         __quantity (int): Quantity of the resource.
         __description (str): Description of the resource.
     '''
-    
+
+    MIN_QUANTITY = 0
 
     def __init__(self, name: str, description: str, quantity: int = 0):
         '''
@@ -24,14 +27,14 @@ class Resource:
         Args:
             name (str): Resource name.
             description (str): Resource description.
-            quantity (str): Resource quantity.
+            quantity (int): Resource quantity.
         '''
         if not isinstance(name, str):
             name = "Unknown"
         if not isinstance(description, str):
             description = "Unknown"
         if not check_unsigned_int(quantity):
-            quantity = 0
+            quantity = self.MIN_QUANTITY
 
         self.__name: str = name
         self.__quantity: int = quantity
@@ -66,19 +69,6 @@ class Resource:
         '''
         return self.__quantity
 
-    # def set_quantity(self, quantity):
-    #     '''
-    #     Set resource quantity.
-
-    #     Args:
-    #         quantity (int): New resource quantity.
-    #     '''
-    #     if (not isinstance(quantity, int) 
-    #             or isinstance(quantity, bool)
-    #             or quantity < 0):
-    #         return
-
-    #     self.__quantity = quantity
     quantity = property(get_quantity)
 
     def add_quantity(self, quantity):
@@ -88,7 +78,7 @@ class Resource:
         Args:
             quantity (int): Quantity of resource to be added.
         '''
-        if (not isinstance(quantity, int) 
+        if (not isinstance(quantity, int)
                 or isinstance(quantity, bool)
                 or self.__quantity + quantity < 0):
             return
@@ -105,16 +95,21 @@ class Resource:
         return (f"Resource name: {self.__name}, Quantity: {self.__quantity}, "
                 f"Description: {self.__description}.")
 
+
 class ResourceManager:
     '''
     The class responsible for managing resources used during summoning.
 
     Attributes:
-        __necrotic_runes (Resource): Resource object representing Necrotic
+        __necrotic_runes (Resource): Resource object representing
+            Necrotic
           Runes
-        __spirit_runes (Resource): Resource object representing Spirit Runes.
-        __bone_runes (Resource): Resource object representing Bone Runes.
-        __flesh_runes (Resource): Resourece object representing Flesh Runes.
+        __spirit_runes (Resource): Resource object representing Spirit
+            Runes.
+        __bone_runes (Resource): Resource object representing Bone
+            Runes.
+        __flesh_runes (Resource): Resourece object representing Flesh
+            Runes.
         __ectoplasm (Resource): Resource object representing Ectoplasm.
     '''
 
@@ -126,13 +121,11 @@ class ResourceManager:
         "ectoplasm"
     )
 
-    
-
-    def __init__(self, 
-                 necrotic_quant: int = 0, 
-                 spirit_quant: int = 0, 
-                 bone_quant: int = 0, 
-                 flesh_quant: int = 0, 
+    def __init__(self,
+                 necrotic_quant: int = 0,
+                 spirit_quant: int = 0,
+                 bone_quant: int = 0,
+                 flesh_quant: int = 0,
                  ectoplasm_quant: int = 0):
         '''
         Initiate
@@ -140,10 +133,10 @@ class ResourceManager:
         self.__resources = {
             "necrotic_runes": Resource(
                 "Necrotic Runes",
-                "Necrotic runes are a type of runes consisting of spirit," \
+                "Necrotic runes are a type of runes consisting of spirit,"
                 " bone, flesh, and miasma runes.",
-                necrotic_quant # Validation done in Resource class
-            ), 
+                necrotic_quant  # Validation done in Resource class
+            ),
             "spirit_runes": Resource(
                 "Spirit Runes",
                 "Spirit Runes may be more important for spectral summons.",
@@ -161,47 +154,22 @@ class ResourceManager:
             ),
             "ectoplasm": Resource(
                 "Ectoplasm",
-                "Ectoplasm is a Necromancy material used to draw any alteration glyphs, and for conjuring.",
+                "Ectoplasm is used to draw alteration glyphs "
+                "and for conjuring.",
                 ectoplasm_quant
             )
         }
-
-        # self.__necrotic_runes = Resource(
-        #     "Necrotic Runes",
-        #     "Necrotic runes are a type of runes consisting of spirit," \
-        #     " bone, flesh, and miasma runes.",
-        #     necrotic_quant
-        # )
-        # self.__spirit_runes = Resource(
-        #     "Spirit Runes",
-        #     "Spirit Runes may be more important for spectral summons.",
-        #     spirit_quant
-        # )
-        # self.__bone_runes = Resource(
-        #     "Bone Runes",
-        #     "Bone Runes may be more important for skeletal summons.",
-        #     bone_quant
-        # )
-        # self.__flesh_runes = Resource(
-        #     "Flesh Runes",
-        #     "Flesh Runes may be more important for corpse-based summons.",
-        #     flesh_quant
-        # )
-        # self.__ectoplasm = Resource(
-        #     "Ectoplasm",
-        #     "Ectoplasm is a Necromancy material used to draw any alteration glyphs, and for conjuring.",
-        #     ectoplasm_quant
-        # )
 
     def get_resources(self) -> dict[str, Resource]:
         '''
         Get resources.
 
         Returns:
-            dict[str, Resource]: name of the resource and the coresponding
+            dict[str, Resource]: name of the resource and the
+                coresponding
               Resource object.
         '''
-        return self.__resources.copy() # shallow copy
+        return self.__resources.copy()  # shallow copy
     resources = property(get_resources)
 
     @staticmethod
@@ -231,11 +199,11 @@ class ResourceManager:
             result[key] = num
 
         return result
-        
+
     def collect_resources(
-            self,
-            quantities: dict[str, int] | tuple[int, int, int, int, int]
-        ):
+        self,
+        quantities: dict[str, int] | tuple[int, int, int, int, int]
+    ):
         '''
         Add each resource by some quantity.
 
@@ -243,32 +211,31 @@ class ResourceManager:
             quantities (dict[str, Resource]): quantity of corresponding
               resource, e.g. {"spirit_runes": 4, ...}
         '''
-        dict = self.input_to_dict(quantities)
-        if dict == None:
+        requirements = self.input_to_dict(quantities)
+        if requirements is None:
             return
 
-        for key, num in dict.items():
+        for key, num in requirements.items():
             self.__resources[key].add_quantity(num)
 
     def has_resources(
-            self,
-            quantities: dict[str, int] | tuple[int, int, int, int, int]
-        ) -> bool:
-        dict = self.input_to_dict(quantities)
-        if dict == None:
+        self,
+        quantities: dict[str, int] | tuple[int, int, int, int, int]
+    ) -> bool:
+        requirements = self.input_to_dict(quantities)
+        if requirements is None:
             return False
 
-        for key, num in dict.items():
+        for key, num in requirements.items():
             if self.__resources[key].quantity < num:
                 return False
 
         return True
-        
 
     def spend_resources(
-            self,
-            quantities: dict[str, int] | tuple[int, int, int, int, int]
-        ) -> bool:
+        self,
+        quantities: dict[str, int] | tuple[int, int, int, int, int]
+    ) -> bool:
         '''
         Add each resource by some quantity.
 
@@ -276,20 +243,18 @@ class ResourceManager:
             quantities (dict[str, Resource]): quantity of corresponding
                 resource, e.g. {"spirit_runes": 4, ...}
         '''
-        dict = self.input_to_dict(quantities)
-        if dict == None:
+        requirements = self.input_to_dict(quantities)
+        if requirements is None:
             return False
 
         if not self.has_resources(quantities):
             return False
 
-        for key, num in dict.items():
+        for key, num in requirements.items():
             self.__resources[key].add_quantity(-num)
 
         return True
 
     def __str__(self) -> str:
-        return "\n".join(str(resource) for resource in self.__resources.values())
-
-
-
+        return "\n".join(
+            str(resource) for resource in self.__resources.values())

@@ -6,7 +6,7 @@ class Temperature:
         return (self.celsius * 9 / 5) + 32
 
     def check_is_freezing(self):
-        if(self.celsius <= 0):
+        if (self.celsius <= 0):
             print("So god damn cold")
         else:
             print("My icecream is melting")
@@ -14,20 +14,21 @@ class Temperature:
         return
 
     def check_weather(self):
-        if(self.celsius <= 0):
+        if (self.celsius <= 0):
             print("brrrr it's freezing")
-        elif(self.celsius <= 10):
+        elif (self.celsius <= 10):
             print("Grab a jacket")
-        elif(self.celsius <= 18):
+        elif (self.celsius <= 18):
             print("It's cool out")
-        elif(self.celsius <= 25):
+        elif (self.celsius <= 25):
             print("Yeah, the sun <3")
-        elif(self.celsius <= 35):
+        elif (self.celsius <= 35):
             print("Classic Australia")
         else:
             print("Heat wave time :(")
 
         return
+
 
 if __name__ == "__main__":
     temperature = Temperature()

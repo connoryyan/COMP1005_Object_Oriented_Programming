@@ -35,7 +35,8 @@ class Wick:
         return self.__burn_time
 
     def __str__(self):
-        return f"Wick length: {self.__length} cm, Burn time: {self.__burn_time}"
+        return (f"Wick length: {self.__length} cm, "
+                f"Burn time: {self.__burn_time}")
 
 
 class Candle:
@@ -67,6 +68,7 @@ class Candle:
 
     def __str__(self):
         return f"Candle size: {self.__size}, Burn time: {self.__burn_time}"
+
 
 wax_1 = Wax("Paraffin")
 wax_2 = Wax("Bee")

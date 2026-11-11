@@ -12,7 +12,8 @@ class Necromancer:
         __resources (ResourceManager): Resource manager owned by the
             necromancer.
         __undead (list[Undead]): Undead creatures currently controlled.
-        __next_id (int): Identifier assigned to the next summoned undead.
+        __next_id (int): Identifier assigned to the next summoned
+            undead.
     """
 
     MAX_UNDEAD = 10
@@ -95,7 +96,8 @@ class Necromancer:
             id (int): Identifier of the undead to find.
 
         Returns:
-            Undead | None: The matching undead, or None if it is not found.
+            Undead | None: The matching undead, or None if it is not
+                found.
         """
         for undead in self.__undead:
             if undead.id == id:
@@ -127,10 +129,17 @@ class Necromancer:
         if not ritual.can_perform(self.__resources):
             return None
 
-        if not ritual.perform(self.__resources):
+        # Construct before spending so factory errors cannot consume resources.
+        try:
+            undead = ritual.create_summon(self.__next_id)
+            if not isinstance(undead, Undead):
+                return None
+        except (TypeError, ValueError) as error:
+            print(f"[INFO] Summon creation failed: {error}")
             return None
 
-        undead = ritual.summon(self.__next_id)
+        if not ritual.perform(self.__resources):
+            return None
 
         self.__undead.append(undead)
         self.__next_id += 1
@@ -174,6 +183,11 @@ class Necromancer:
         undead.level_up()
 
         return True
+
+    def command(self, id: int) -> str | None:
+        """Command a controlled summon by its identifier."""
+        undead = self.__find_undead(id)
+        return undead.command() if undead is not None else None
 
     def __str__(self) -> str:
         """

@@ -1,0 +1,35 @@
+[
+  {
+    "check": "Undead invalid health string",
+    "exception": "TypeError",
+    "message": "'<' not supported between instances of 'int' and 'str'"
+  },
+  {
+    "check": "Boolean summon lookup aliases integer id",
+    "result": true
+  },
+  {
+    "check": "Pending transaction accepts nan amount",
+    "result": "Transaction(id=1, type=Deposit, amount=nan, description=, status=Pending, resulting_balance=None)"
+  },
+  {
+    "check": "Negative identifier accepted",
+    "result": -1
+  },
+  {
+    "check": "Invalid branch phone feedback",
+    "stdout": ""
+  },
+  {
+    "check": "Invalid client name feedback",
+    "stdout": ""
+  },
+  {
+    "check": "Explicit repr calls in Finance main",
+    "count": 0
+  },
+  {
+    "check": "Transaction process/cancel calls in Finance main",
+    "count": 0
+  }
+]

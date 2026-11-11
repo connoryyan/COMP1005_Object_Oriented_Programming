@@ -11,7 +11,8 @@ class SummoningRitual:
         undead_name: str,
         starting_health: int,
         starting_power: int,
-        costs: dict[str, int] | tuple[int, int, int, int, int]
+        costs: dict[str, int] | tuple[int, int, int, int, int],
+        summon_class: type[Undead] = Undead
     ):
         if not isinstance(name, str):
             name = "Unknown"
@@ -19,11 +20,13 @@ class SummoningRitual:
             undead_name = "Unknown"
         if (not check_int(starting_health)
                 or starting_health < Undead.MIN_HEALTH
-                or starting_health > Undead.MAX_HEALTH):
+                or starting_health > getattr(summon_class, "MAX_HEALTH",
+                                             Undead.MAX_HEALTH)):
             starting_health = Undead.MIN_HEALTH
         if (not check_int(starting_power)
                 or starting_power < Undead.MIN_POWER
-                or starting_power > Undead.MAX_POWER):
+                or starting_power > getattr(summon_class, "MAX_POWER",
+                                            Undead.MAX_POWER)):
             starting_power = Undead.MIN_POWER
 
         self.__name: str = name
@@ -32,7 +35,7 @@ class SummoningRitual:
         self.__starting_power: int = starting_power
 
         costs = ResourceManager.input_to_dict(costs)
-        if costs == None or costs["ectoplasm"] <= 0:
+        if costs is None or costs.get("ectoplasm", 0) <= 0:
             costs = {
                 "necrotic_runes": 0,
                 "spirit_runes": 0,
@@ -40,7 +43,24 @@ class SummoningRitual:
                 "flesh_runes": 0,
                 "ectoplasm": 1
             }
-        self.__costs: dict[str, int] = costs
+        self.__costs: dict[str, int] = dict.fromkeys(
+            ResourceManager.KEYS, 0)
+        self.__costs.update(costs)
+
+        if not (isinstance(summon_class, type)
+                and issubclass(summon_class, Undead)):
+            summon_class = Undead
+
+        self.__summon_class: type[Undead] = summon_class
+
+    def get_summon_class(self) -> type[Undead]:
+        '''
+        Get the specialised undead class this ritual creates.
+
+        Returns:
+            type[Undead]: The summon class of the ritual.
+        '''
+        return self.__summon_class
 
     def get_name(self):
         return self.__name
@@ -62,26 +82,40 @@ class SummoningRitual:
     starting_health = property(get_starting_health)
     starting_power = property(get_starting_power)
     costs = property(get_costs)
+    summon_class = property(get_summon_class)
 
-    def can_perform(self, resourceManager: ResourceManager) -> bool:
+    def can_perform(self, resource_manager: ResourceManager) -> bool:
         """Return True if the ritual can currently be performed."""
-        if not isinstance(resourceManager, ResourceManager):
+        if not isinstance(resource_manager, ResourceManager):
             return False
 
-        return resourceManager.has_resources(self.__costs)
+        return resource_manager.has_resources(self.__costs)
 
-    def perform(self, resourceManager: ResourceManager) -> bool:
+    def perform(self, resource_manager: ResourceManager) -> bool:
         """Consume the resources required by the ritual."""
-        if not self.can_perform(resourceManager):
+        if not self.can_perform(resource_manager):
             return False
 
-        return resourceManager.spend_resources(self.__costs)
+        return resource_manager.spend_resources(self.__costs)
 
-    def summon(self, id: int) -> Undead:
-        """Create and return a new undead creature."""
-        return Undead(
+    def create_summon(self, id: int) -> Undead:
+        '''
+        Create and return a new undead creature of the ritual's summon
+            class.
+
+        Args:
+            id (int): Identifier supplied by the necromancer.
+
+        Returns:
+            Undead: The newly created specialised undead creature.
+        '''
+        return self.__summon_class(
             id,
             self.__undead_name,
             self.__starting_health,
             self.__starting_power
         )
+
+    def summon(self, id: int) -> Undead:
+        """Create and return a new undead creature."""
+        return self.create_summon(id)

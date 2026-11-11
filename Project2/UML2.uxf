@@ -1,4 +1,4 @@
-<diagram program="umletino" version="15.1"><zoom_level>5</zoom_level><help_text>Space for diagram notes str</help_text><element><id>UMLClass</id><coordinates><x>120</x><y>25</y><w>170</w><h>135</h></coordinates><panel_attributes>ResourceManager
+<diagram program="umletino" version="15.1"><zoom_level>5</zoom_level><help_text>Space for diagram notes str</help_text><element><id>UMLClass</id><coordinates><x>105</x><y>285</y><w>170</w><h>135</h></coordinates><panel_attributes>ResourceManager
 --
 + KEYS: tuple
 - resources: dict[str, Resource]
@@ -11,7 +11,7 @@
    : dict[str, int] | None
 + collect_resources(quantities)
 + has_resources(quantities): bool
-+ spend_resources(quantities): bool</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>340</x><y>25</y><w>160</w><h>115</h></coordinates><panel_attributes>Resource
++ spend_resources(quantities): bool</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>325</x><y>285</y><w>160</w><h>115</h></coordinates><panel_attributes>Resource
 --
 - name: str
 - quantity: int
@@ -22,7 +22,7 @@
 + get_description(): str
 + get_quantity(): int
 + add_quantity(quantity: int)
-+ str(): str</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>120</x><y>205</y><w>170</w><h>170</h></coordinates><panel_attributes>SummoningRitual
++ str(): str</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>105</x><y>465</y><w>170</w><h>170</h></coordinates><panel_attributes>SummoningRitual
 --
 - name: str
 - undead_name: str
@@ -39,7 +39,7 @@
 + get_costs()
 + can_perform(resourceManager: ResourceManager): bool
 + perform(resourceManager: ResourceManager): bool
-+ summon(id: int): Undead</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>350</x><y>205</y><w>150</w><h>170</h></coordinates><panel_attributes>Undead
++ summon(id: int): Undead</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>335</x><y>465</y><w>150</w><h>170</h></coordinates><panel_attributes>Undead
 --
 + MIN_HEALTH: int = 1
 + MAX_HEALTH: int = 100
@@ -61,12 +61,12 @@
 + get_power()
 + get_level()
 + level_up()
-+ str(): str</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>285</x><y>65</y><w>65</w><h>25</h></coordinates><panel_attributes>lt=&lt;&lt;&lt;&lt;&lt;-
++ str(): str</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>270</x><y>325</y><w>65</w><h>25</h></coordinates><panel_attributes>lt=&lt;&lt;&lt;&lt;&lt;-
 m1=1
 m2=5
-manages</panel_attributes><additional_attributes>10;20;110;20</additional_attributes></element><element><id>Relation</id><coordinates><x>200</x><y>155</y><w>25</w><h>60</h></coordinates><panel_attributes>lt=.&gt;
-uses</panel_attributes><additional_attributes>10;100;10;10</additional_attributes></element><element><id>Relation</id><coordinates><x>285</x><y>265</y><w>75</w><h>20</h></coordinates><panel_attributes>lt=.&gt;
-creates</panel_attributes><additional_attributes>10;20;130;20</additional_attributes></element><element><id>UMLClass</id><coordinates><x>340</x><y>430</y><w>170</w><h>125</h></coordinates><panel_attributes>Necromancer
+manages</panel_attributes><additional_attributes>10;20;110;20</additional_attributes></element><element><id>Relation</id><coordinates><x>185</x><y>415</y><w>25</w><h>60</h></coordinates><panel_attributes>lt=.&gt;
+uses</panel_attributes><additional_attributes>10;100;10;10</additional_attributes></element><element><id>Relation</id><coordinates><x>270</x><y>525</y><w>75</w><h>20</h></coordinates><panel_attributes>lt=.&gt;
+creates</panel_attributes><additional_attributes>10;20;130;20</additional_attributes></element><element><id>UMLClass</id><coordinates><x>325</x><y>690</y><w>170</w><h>125</h></coordinates><panel_attributes>Necromancer
 --
 + MAX_UNDEAD: int
 - name: str
@@ -82,8 +82,8 @@ creates</panel_attributes><additional_attributes>10;20;130;20</additional_attrib
 + summon(ritual: SummoningRitual): Undead | None
 + dismiss(id: int): bool
 + level_up(id: int): bool
-+ str(): str</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>420</x><y>370</y><w>35</w><h>70</h></coordinates><panel_attributes>lt=&lt;&lt;&lt;&lt;&lt;-
++ str(): str</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>405</x><y>630</y><w>35</w><h>70</h></coordinates><panel_attributes>lt=&lt;&lt;&lt;&lt;&lt;-
 m1=1..1
 m2=0..n
-controls</panel_attributes><additional_attributes>10;120;10;10</additional_attributes></element><element><id>Relation</id><coordinates><x>200</x><y>370</y><w>150</w><h>140</h></coordinates><panel_attributes>lt=.&gt;
+controls</panel_attributes><additional_attributes>10;120;10;10</additional_attributes></element><element><id>Relation</id><coordinates><x>185</x><y>630</y><w>150</w><h>140</h></coordinates><panel_attributes>lt=.&gt;
 uses</panel_attributes><additional_attributes>280;260;10;260;10;10</additional_attributes></element></diagram>

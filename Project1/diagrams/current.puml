@@ -1,0 +1,132 @@
+@startuml
+skinparam classAttributeIconSize 0
+abstract class Account {
+- id: int | None
+- name: str
+# balance: float
+- transactions: list[Transaction]
+# last_error: FinanceError | None
++ __init__(id: int, name: str='Account')
++ __str__(): str
++ __repr__(): str
++ get_id(): int | None
++ get_name(): str
++ get_type(): str
++ get_balance(): float
++ last_error(): FinanceError | None
+# _validate_amount(amount): None
++ deposit(amount: float): bool
+# _check_withdrawal(amount: float): None
++ withdraw(amount: float): bool {abstract}
++ get_transactions(): list[Transaction]
++ get_transactions_filter(typ: str | None=None, status: str | None=None, amount_min: float | None=None, amount_max: float | None=None): list[Transaction]
++ display_balance(): None
+- __create_transaction(transaction_type: str, amount: float): None
+}
+class SavingsAccount {
+- interest_rate: float
++ MINIMUM_BALANCE = 100.0
++ __init__(id: int, interest_rate: float, name: str='Savings')
++ get_interest_rate(): float
+# _check_withdrawal(amount: float): None
++ withdraw(amount: float): bool
+}
+Account <|-- SavingsAccount
+class EverydayAccount {
++ MAX_WITHDRAWAL = 1000.0
++ __init__(id: int, name: str='Everyday')
+# _check_withdrawal(amount: float): None
++ withdraw(amount: float): bool
+}
+Account <|-- EverydayAccount
+class Client {
+- id: int | None
+- name: str | None
+- is_active: bool
+- preferred_contact: str | None
+- contact: str | None
+- accounts: dict[int, Account]
+- preferred_branch: Branch | None
++ __init__(id: int, name: str, is_active: bool, preferred_contact: str, contact: str)
++ get_id(): int | None
++ get_name(): str | None
++ set_name(name: str): None
++ get_preferred_contact(): str | None
++ change_preferred_contact(preferred_contact: str): None
++ get_contact(): str | None
++ change_contact(contact: str): None
++ get_is_active(): bool
++ change_is_active(is_active: bool): None
++ get_account(account_number: int): Account | None
++ get_accounts(): dict[int, Account]
++ add_account(account: Account): None
++ remove_account(account: Account): None
++ remove_account_number(account_number: int): None
++ get_preferred_branch(): Branch | None
++ set_preferred_branch(branch: Branch): None
++ __str__(): str
++ __repr__(): str
+}
+class Branch {
+- id: int | None
+- name: str | None
+- location: str | None
+- phone: str | None
+- is_open: bool
++ __init__(id: int, name: str, location: str, phone: str, is_open: bool=False)
++ get_id(): int | None
++ get_name(): str | None
++ set_name(name: str): None
++ get_location(): str | None
++ set_location(location: str): None
++ get_phone(): str | None
++ set_phone(phone: str): None
++ get_is_open(): bool
++ open(): None
++ close(): None
++ __str__(): str
++ __repr__(): str
+}
+class Transaction {
+- id: int | None
+- type: str | None
+- amount: float | None
+- description: str | None
+- status: str
+- resulting_balance: float | None
++ __init__(id: int, transaction_type: str, amount: float, description: str='', resulting_balance: float | None=None, status: str='Pending')
++ get_id(): int | None
++ get_type(): str | None
++ get_amount(): float | None
++ get_description(): str | None
++ set_description(description: str): None
++ get_status(): str
++ get_resulting_balance(): float | None
++ process(): bool
++ cancel(): bool
++ __str__(): str
++ __repr__(): str
+}
+class FinanceError {
+}
+class InvalidAmountError {
+}
+FinanceError <|-- InvalidAmountError
+class InsufficientFundsError {
+}
+FinanceError <|-- InsufficientFundsError
+class MinimumBalanceError {
+}
+FinanceError <|-- MinimumBalanceError
+class WithdrawalLimitError {
+}
+FinanceError <|-- WithdrawalLimitError
+class AccountNotFoundError {
+}
+FinanceError <|-- AccountNotFoundError
+Client "0..*" o-- "0..*" Account: accounts by number
+Client "0..*" --> "0..1" Branch: prefers
+Account "1" *-- "0..*" Transaction: creates and owns
+Account ..> FinanceError: raises and handles
+Client ..> AccountNotFoundError: raises and handles
+@enduml

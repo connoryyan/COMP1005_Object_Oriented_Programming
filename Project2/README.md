@@ -1,5 +1,6 @@
 # Project 2
 
+
 - Independent class for resource
 - Dictionary to store different resources.
   ```py
@@ -82,3 +83,17 @@
             if check_unsigned_int(num) and key in self.__resources.keys():
                 self.__resources[key].add_quantity(num)
   ```
+
+## Current implementation and verification (11 November 2026)
+
+Run `python Project2/main.py` from the repository root for the complete
+summoning demonstration, including DeathKnight, MRO and levelling.
+Run `python -m pytest Project2/tests` for the regression suite, or
+`python Project2/test.py` for the original manual tests.
+
+The complete current UML is `current.uxf` / `current.puml`.
+`UML3.uxf` also contains this updated model. Resource quantities are owned
+by ResourceManager, which is composed inside Necromancer. The necromancer
+aggregates controlled undead and uses rituals to create concrete subtypes.
+The factory runs before resources are spent, so failed creation cannot
+consume resources. Earlier review notes above are retained unchanged.

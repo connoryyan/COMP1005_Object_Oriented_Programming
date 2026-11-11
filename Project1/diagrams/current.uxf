@@ -1,0 +1,402 @@
+<?xml version='1.0' encoding='utf-8'?>
+<diagram program="umletino" version="15.1">
+  <zoom_level>10</zoom_level>
+  <help_text>Current implementation. Earlier diagrams are development evidence. Properties expose private state; inherited members are omitted.</help_text>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>0</x>
+      <y>0</y>
+      <w>640</w>
+      <h>504</h>
+    </coordinates>
+    <panel_attributes>/Account/
+--
+- id: int | None
+- name: str
+# balance: float
+- transactions: list[Transaction]
+# last_error: FinanceError | None
+--
++ __init__(id: int, name: str='Account')
++ __str__(): str
++ __repr__(): str
++ get_id(): int | None
++ get_name(): str
++ get_type(): str
++ get_balance(): float
++ last_error(): FinanceError | None
+# _validate_amount(amount): None
++ deposit(amount: float): bool
+# _check_withdrawal(amount: float): None
++ withdraw(amount: float): bool {abstract}
++ get_transactions(): list[Transaction]
++ get_transactions_filter(typ: str | None=None, status: str |
+None=None, amount_min: float | None=None, amount_max: float |
+None=None): list[Transaction]
++ display_balance(): None
+- __create_transaction(transaction_type: str, amount: float): None</panel_attributes>
+    <additional_attributes />
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>700</x>
+      <y>0</y>
+      <w>640</w>
+      <h>198</h>
+    </coordinates>
+    <panel_attributes>SavingsAccount
+--
+- interest_rate: float
++ MINIMUM_BALANCE = 100.0
+--
++ __init__(id: int, interest_rate: float, name: str='Savings')
++ get_interest_rate(): float
+# _check_withdrawal(amount: float): None
++ withdraw(amount: float): bool</panel_attributes>
+    <additional_attributes />
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1400</x>
+      <y>0</y>
+      <w>640</w>
+      <h>162</h>
+    </coordinates>
+    <panel_attributes>EverydayAccount
+--
++ MAX_WITHDRAWAL = 1000.0
+--
++ __init__(id: int, name: str='Everyday')
+# _check_withdrawal(amount: float): None
++ withdraw(amount: float): bool</panel_attributes>
+    <additional_attributes />
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>0</x>
+      <y>1250</y>
+      <w>640</w>
+      <h>576</h>
+    </coordinates>
+    <panel_attributes>Client
+--
+- id: int | None
+- name: str | None
+- is_active: bool
+- preferred_contact: str | None
+- contact: str | None
+- accounts: dict[int, Account]
+- preferred_branch: Branch | None
+--
++ __init__(id: int, name: str, is_active: bool, preferred_contact:
+str, contact: str)
++ get_id(): int | None
++ get_name(): str | None
++ set_name(name: str): None
++ get_preferred_contact(): str | None
++ change_preferred_contact(preferred_contact: str): None
++ get_contact(): str | None
++ change_contact(contact: str): None
++ get_is_active(): bool
++ change_is_active(is_active: bool): None
++ get_account(account_number: int): Account | None
++ get_accounts(): dict[int, Account]
++ add_account(account: Account): None
++ remove_account(account: Account): None
++ remove_account_number(account_number: int): None
++ get_preferred_branch(): Branch | None
++ set_preferred_branch(branch: Branch): None
++ __str__(): str
++ __repr__(): str</panel_attributes>
+    <additional_attributes />
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>700</x>
+      <y>1250</y>
+      <w>640</w>
+      <h>432</h>
+    </coordinates>
+    <panel_attributes>Branch
+--
+- id: int | None
+- name: str | None
+- location: str | None
+- phone: str | None
+- is_open: bool
+--
++ __init__(id: int, name: str, location: str, phone: str, is_open:
+bool=False)
++ get_id(): int | None
++ get_name(): str | None
++ set_name(name: str): None
++ get_location(): str | None
++ set_location(location: str): None
++ get_phone(): str | None
++ set_phone(phone: str): None
++ get_is_open(): bool
++ open(): None
++ close(): None
++ __str__(): str
++ __repr__(): str</panel_attributes>
+    <additional_attributes />
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1400</x>
+      <y>1250</y>
+      <w>640</w>
+      <h>432</h>
+    </coordinates>
+    <panel_attributes>Transaction
+--
+- id: int | None
+- type: str | None
+- amount: float | None
+- description: str | None
+- status: str
+- resulting_balance: float | None
+--
++ __init__(id: int, transaction_type: str, amount: float, description:
+str='', resulting_balance: float | None=None, status: str='Pending')
++ get_id(): int | None
++ get_type(): str | None
++ get_amount(): float | None
++ get_description(): str | None
++ set_description(description: str): None
++ get_status(): str
++ get_resulting_balance(): float | None
++ process(): bool
++ cancel(): bool
++ __str__(): str
++ __repr__(): str</panel_attributes>
+    <additional_attributes />
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>0</x>
+      <y>2500</y>
+      <w>640</w>
+      <h>100</h>
+    </coordinates>
+    <panel_attributes>FinanceError
+--
+--</panel_attributes>
+    <additional_attributes />
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>700</x>
+      <y>2500</y>
+      <w>640</w>
+      <h>100</h>
+    </coordinates>
+    <panel_attributes>InvalidAmountError
+--
+--</panel_attributes>
+    <additional_attributes />
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1400</x>
+      <y>2500</y>
+      <w>640</w>
+      <h>100</h>
+    </coordinates>
+    <panel_attributes>InsufficientFundsError
+--
+--</panel_attributes>
+    <additional_attributes />
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>0</x>
+      <y>3750</y>
+      <w>640</w>
+      <h>100</h>
+    </coordinates>
+    <panel_attributes>MinimumBalanceError
+--
+--</panel_attributes>
+    <additional_attributes />
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>700</x>
+      <y>3750</y>
+      <w>640</w>
+      <h>100</h>
+    </coordinates>
+    <panel_attributes>WithdrawalLimitError
+--
+--</panel_attributes>
+    <additional_attributes />
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1400</x>
+      <y>3750</y>
+      <w>640</w>
+      <h>100</h>
+    </coordinates>
+    <panel_attributes>AccountNotFoundError
+--
+--</panel_attributes>
+    <additional_attributes />
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>310</x>
+      <y>-10</y>
+      <w>30</w>
+      <h>1856</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;-
+m1=0..*
+m2=0..*
+accounts by number</panel_attributes>
+    <additional_attributes>10;1836;10;10</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>630</x>
+      <y>1456</y>
+      <w>90</w>
+      <h>102</h>
+    </coordinates>
+    <panel_attributes>lt=-&gt;
+m1=0..*
+m2=0..1
+prefers</panel_attributes>
+    <additional_attributes>10;82;70;10</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>310</x>
+      <y>494</y>
+      <w>1430</w>
+      <h>776</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;&lt;-
+m1=1
+m2=0..*
+creates and owns</panel_attributes>
+    <additional_attributes>10;10;1410;756</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>310</x>
+      <y>494</y>
+      <w>30</w>
+      <h>2026</h>
+    </coordinates>
+    <panel_attributes>lt=.&gt;
+raises and handles</panel_attributes>
+    <additional_attributes>10;10;10;2006</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>310</x>
+      <y>1816</y>
+      <w>1430</w>
+      <h>1954</h>
+    </coordinates>
+    <panel_attributes>lt=.&gt;
+raises and handles</panel_attributes>
+    <additional_attributes>10;10;1410;1934</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>630</x>
+      <y>89</y>
+      <w>90</w>
+      <h>183</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>10;163;70;10</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>630</x>
+      <y>71</y>
+      <w>790</w>
+      <h>201</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>10;181;770;10</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>630</x>
+      <y>2540</y>
+      <w>90</w>
+      <h>30</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>10;10;70;10</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>630</x>
+      <y>2540</y>
+      <w>790</w>
+      <h>30</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>10;10;770;10</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>310</x>
+      <y>2590</y>
+      <w>30</w>
+      <h>1180</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>10;10;10;1160</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>310</x>
+      <y>2590</y>
+      <w>730</w>
+      <h>1180</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>10;10;710;1160</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>310</x>
+      <y>2590</y>
+      <w>1430</w>
+      <h>1180</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>10;10;1410;1160</additional_attributes>
+  </element>
+</diagram>

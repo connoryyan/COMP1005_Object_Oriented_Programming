@@ -53,8 +53,9 @@ class TissueBox:
         return True
 
     def take_multiple_tissues(self, amount):
-        if len(self.__tissues) == 0:
-            print("The tissue box is empty.")
+        if (not isinstance(amount, int) or isinstance(amount, bool)
+                or amount <= 0 or amount > len(self.__tissues)):
+            print("Invalid quantity or not enough tissues.")
             return False
 
         for _ in range(amount):

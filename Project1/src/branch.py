@@ -2,8 +2,10 @@ class Branch:
     '''
     Models a single branch of the financial organisation.
 
-    All attributes are private and are exposed through properties. The branch
-    name, location and phone number can be updated through their property
+    All attributes are private and are exposed through properties. The
+        branch
+    name, location and phone number can be updated through their
+        property
     setters, while the open/closed state can only change through the
     behavioural methods open() and close().
 

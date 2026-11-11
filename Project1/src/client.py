@@ -1,5 +1,6 @@
-from account import Account
-from branch import Branch
+from .account import Account
+from .branch import Branch
+from .exceptions import AccountNotFoundError
 
 
 class Client:
@@ -10,22 +11,26 @@ class Client:
         __id (int): The client's unique identifier.
         __name (str): The client's name.
         __is_active (bool): Whether the client's record is active.
-        __preferred_contact (str): The client's preferred contact method.
+        __preferred_contact (str): The client's preferred contact
+            method.
         __contact (str): The client's contact details.
-        __accounts (list[Account]): The accounts owned by the client.
+        __accounts (dict[int, Account]): The accounts owned by the
+            client.
         __preferred_branch (Branch): The client's preferred branch.
     '''
 
     def __init__(self, id: int, name: str, is_active: bool,
                  preferred_contact: str, contact: str):
         '''
-        Initialise a new client with no accounts and no preferred branch.
+        Initialise a new client with no accounts and no preferred
+            branch.
 
         Args:
             id (int): The client's unique identifier.
             name (str): The client's name.
             is_active (bool): Whether the client's record is active.
-            preferred_contact (str): The client's preferred contact method.
+            preferred_contact (str): The client's preferred contact
+                method.
             contact (str): The client's contact details.
         '''
         if not isinstance(id, int) or isinstance(id, bool):
@@ -44,7 +49,7 @@ class Client:
         self.__is_active: bool = is_active
         self.__preferred_contact: str | None = preferred_contact
         self.__contact: str | None = contact
-        self.__accounts: list[Account] = []
+        self.__accounts: dict[int, Account] = dict()
         self.__preferred_branch: Branch | None = None
 
     def get_id(self) -> int | None:
@@ -160,40 +165,76 @@ class Client:
         state = "active" if self.__is_active else "inactive"
         print(f"[INFO] {self.__name} has been recorded as {state}.")
 
-    def get_accounts(self) -> list[Account]:
+    def get_account(self, account_number: int) -> Account | None:
+        '''
+        Retrieve an account by account number.
+
+        Args:
+            account_number (int): The account number.
+
+        Returns:
+            Account | None: The matching account. If no matching
+                account,
+            `None` will be returned.
+        '''
+
+        try:
+            if (not isinstance(account_number, int)
+                    or isinstance(account_number, bool)
+                    or account_number not in self.__accounts):
+                raise AccountNotFoundError(
+                    f"Client {self.id}: account {account_number!r} not found.")
+            return self.__accounts[account_number]
+        except AccountNotFoundError as error:
+            print(f"[INFO] {error}")
+            return None
+
+    def get_accounts(self) -> dict[int, Account]:
         '''
         Return the accounts owned by the client.
 
-        A copy of the internal collection is returned so the caller cannot
+        A copy of the internal collection is returned so the caller
+            cannot
         modify it directly; accounts are only added and removed through
         add_account() and remove_account().
 
         Returns:
-            list[Account]: The client's accounts.
+            dict[int, Account]: The client's accounts.
         '''
-        return list(self.__accounts)
+        return dict(self.__accounts)
 
     accounts = property(get_accounts)
 
     def add_account(self, account: Account) -> None:
         '''
-        Add an account to the client's list of accounts.
+        Add an account to the client's dictionary of accounts.
 
         Args:
             account (Account): The account to add.
         '''
-        if isinstance(account, Account) and account not in self.__accounts:
-            self.__accounts.append(account)
+        if (isinstance(account, Account) and account.id is not None
+                and account.id not in self.__accounts):
+            self.__accounts[account.id] = account
 
     def remove_account(self, account: Account) -> None:
         '''
-        Remove an account from the client's list of accounts.
+        Remove an account from the client's dictionary of accounts.
 
         Args:
             account (Account): The account to remove.
         '''
-        if account in self.__accounts:
-            self.__accounts.remove(account)
+        if isinstance(account, Account):
+            self.remove_account_number(account.id)
+
+    def remove_account_number(self, account_number: int) -> None:
+        '''
+        Remove an account using its account number.
+
+        Args:
+            account (Account): The account to remove.
+        '''
+        if self.get_account(account_number) is not None:
+            self.__accounts.pop(account_number)
 
     def get_preferred_branch(self) -> Branch | None:
         '''
@@ -223,7 +264,8 @@ class Client:
         Returns:
             str: A string containing the client's information.
         '''
-        accounts = "\n              ".join(str(a) for a in self.__accounts)
+        accounts = "\n              ".join(
+            str(a) for a in self.__accounts.values())
         return (f"Information of Client #{self.__id}\n"
                 f"    Name: {self.__name}\n"
                 f"    Active: {'Yes' if self.__is_active else 'No'}\n"

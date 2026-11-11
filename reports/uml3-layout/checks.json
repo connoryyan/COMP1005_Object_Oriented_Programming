@@ -1,0 +1,12 @@
+{
+  "class_count": 12,
+  "relation_count": 14,
+  "node_overlaps": 0,
+  "relations_crossing_unrelated_class_interiors": 0,
+  "zoom_level": 6,
+  "preview_note": "Preview rendered from the same class rectangles and edge points; UMLet font and label placement may differ.",
+  "canvas_at_100_percent": [
+    3040,
+    2060
+  ]
+}

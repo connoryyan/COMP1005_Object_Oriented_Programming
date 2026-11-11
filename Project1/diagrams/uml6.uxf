@@ -1,0 +1,102 @@
+<diagram program="umletino" version="15.1"><zoom_level>8</zoom_level><help_text>Space for diagram notes str</help_text><element><id>UMLClass</id><coordinates><x>128</x><y>280</y><w>272</w><h>336</h></coordinates><panel_attributes>Client
+--
+- id: int
+- name: str
+- is_active: bool
+- preferred_contact: str
+- contact: str
+- accounts: dict[int, Account]
+- preferred_branch: Branch | None
+--
++ __init__(id: int, name: str, is_active: bool,
+           preferred_contact: str, contact: str)
++ get_id(): int
++ get_name(): str
++ set_name(name: str): None
++ get_preferred_contact(): str
++ change_preferred_contact(preferred_contact: str): None
++ get_contact(): str
++ change_contact(contact: str): None
++ get_is_active(): bool
++ change_is_active(is_active: bool): None
++ get_accounts(): dict[int, Account]
++ get_account(account_number: int): Account | None
++ remove_account_number(account_number: int): None
++ add_account(account: Account): None
++ remove_account(account: Account): None
++ get_preferred_branch(): Branch
++ set_preferred_branch(branch: Branch): None</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>136</x><y>720</y><w>248</w><h>264</h></coordinates><panel_attributes>Branch
+--
+- id: int
+- name: str
+- location: str
+- phone: str
+- is_open: bool
+--
++ __init__(id: int, name: str, location: str, phone: str,
+           is_open: bool = False)
++ get_id(): int
++ get_name(): str
++ set_name(name: str): None
++ get_location(): str
++ set_location(location: str): None
++ get_phone(): str
++ set_phone(phone: str): None
++ get_is_open(): bool
++ open(): None
++ close(): None</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>520</x><y>280</y><w>320</w><h>208</h></coordinates><panel_attributes>/Account/
+--
+- id: int
+# balance: float
+- transactions: list[Transaction]
+--
++ __init__(id: int)
++ get_id(): int
++ get_type(): str
++ get_balance(): float
++ deposit(amount: float): bool
+/+ withdraw(amount: float): bool/
++ get_transactions(): list[Transaction]
++ display_balance(): None
+- __create_transaction(transaction_type: str, amount: float): None</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>432</x><y>624</y><w>176</w><h>128</h></coordinates><panel_attributes>SavingsAccount
+--
++ MINIMUM_BALANCE = 100.0
+- interest_rate: float
+--
++ __init__(id: int, interest_rate: float)
++ get_interest_rate(): float
++ withdraw(amount: float): bool</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>720</x><y>760</y><w>184</w><h>96</h></coordinates><panel_attributes>EverydayAccount
+--
++ MAX_WITHDRAWAL = 1000.0
+--
++ __init__(id: int)
++ withdraw(amount: float): bool</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>928</x><y>280</y><w>272</w><h>288</h></coordinates><panel_attributes>Transaction
+--
+- id: int
+- type: str
+- amount: float
+- description: str
+- status: str
+- resulting_balance: float
+--
++ __init__(id: int, transaction_type: str, amount: float,
+           description: str = "", resulting_balance: float = None,
+           status: str = "Pending")
++ get_id(): int
++ get_type(): str
++ get_amount(): float
++ get_description(): str
++ set_description(description: str): None
++ get_status(): str
++ get_resulting_balance(): float
++ process(): bool
++ cancel(): bool</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>392</x><y>312</y><w>144</w><h>40</h></coordinates><panel_attributes>lt=&lt;&lt;&lt;&lt;-
+m1=0..*
+m2=0..*
+has</panel_attributes><additional_attributes>10;20;160;20</additional_attributes></element><element><id>Relation</id><coordinates><x>248</x><y>608</y><w>56</w><h>128</h></coordinates><panel_attributes>lt=-&gt;
+m1=0..*
+m2=0..1
+prefers</panel_attributes><additional_attributes>10;10;14;140</additional_attributes></element><element><id>Relation</id><coordinates><x>832</x><y>312</y><w>112</w><h>40</h></coordinates><panel_attributes>lt=&lt;&lt;&lt;&lt;&lt;-
+m1=1
+m2=0..*
+creates</panel_attributes><additional_attributes>10;20;120;20</additional_attributes></element><element><id>Relation</id><coordinates><x>504</x><y>480</y><w>192</w><h>160</h></coordinates><panel_attributes>lt=&lt;&lt;-</panel_attributes><additional_attributes>220;10;220;60;70;80;14;180</additional_attributes></element><element><id>Relation</id><coordinates><x>672</x><y>520</y><w>152</w><h>256</h></coordinates><panel_attributes>lt=-</panel_attributes><additional_attributes>10;10;170;160;168;300</additional_attributes></element></diagram>

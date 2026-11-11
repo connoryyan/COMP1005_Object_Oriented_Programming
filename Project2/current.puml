@@ -1,0 +1,154 @@
+@startuml
+skinparam classAttributeIconSize 0
+class Resource {
+- name: str
+- description: str
+- quantity: int
++ MIN_QUANTITY = 0
++ __init__(name: str, description: str, quantity: int=0)
++ get_name(): str
++ get_description(): str
++ get_quantity(): int
++ add_quantity(quantity)
++ __str__()
+}
+class ResourceManager {
+- resources: dict[str, Resource]
++ KEYS = ('necrotic_runes', 'spirit_runes', 'bone_runes', 'flesh_runes', 'ectoplasm')
++ __init__(necrotic_quant: int=0, spirit_quant: int=0, bone_quant: int=0, flesh_quant: int=0, ectoplasm_quant: int=0)
++ get_resources(): dict[str, Resource]
++ input_to_dict(quantities: dict[str, int] | tuple[int, int, int, int, int]): dict[str, int] | None
++ collect_resources(quantities: dict[str, int] | tuple[int, int, int, int, int])
++ has_resources(quantities: dict[str, int] | tuple[int, int, int, int, int]): bool
++ spend_resources(quantities: dict[str, int] | tuple[int, int, int, int, int]): bool
++ __str__(): str
+}
+class SummoningRitual {
+- name: str
+- undead_name: str
+- starting_health: int
+- starting_power: int
+- costs: dict[str, int]
+- summon_class: type[Undead]
++ __init__(name: str, undead_name: str, starting_health: int, starting_power: int, costs: dict[str, int] | tuple[int, int, int, int, int], summon_class: type[Undead]=Undead)
++ get_summon_class(): type[Undead]
++ get_name()
++ get_undead_name()
++ get_starting_health()
++ get_starting_power()
++ get_costs()
++ can_perform(resource_manager: ResourceManager): bool
++ perform(resource_manager: ResourceManager): bool
++ create_summon(id: int): Undead
++ summon(id: int): Undead
+}
+class Necromancer {
+- name: str
+- resources: ResourceManager
+- undead: list[Undead]
+- next_id: int
++ MAX_UNDEAD = 10
++ __init__(name: str, necrotic_quant: int=0, spirit_quant: int=0, bone_quant: int=0, flesh_quant: int=0, ectoplasm_quant: int=0): None
++ get_name(): str
++ get_resources(): ResourceManager
++ get_undead(): list[Undead]
+- __find_undead(id: int): Undead | None
++ summon(ritual: SummoningRitual): Undead | None
++ dismiss(id: int): bool
++ level_up(id: int): bool
++ command(id: int): str | None
++ __str__(): str
+}
+class Undead {
+- id: int
+- name: str
+# health: int
+# power: int
+# level: int
++ MIN_HEALTH = 1
++ MAX_HEALTH = 100
++ MIN_POWER = 1
++ MAX_POWER = 100
++ MAX_LEVEL = 10
++ HEALTH_PER_LEVEL = 10
++ POWER_PER_LEVEL = 5
++ __init__(id, name, health, power)
++ get_id()
++ get_name()
++ get_health()
++ get_power()
++ get_level()
++ level_up()
++ command(): str
+# _clamp_stats(): None
++ __str__(): str
+}
+class WarriorUndead {
++ __init__(id, name, health, power)
++ command(): str
++ combat_style(): str
+}
+Undead <|-- WarriorUndead
+class CursedUndead {
++ __init__(id, name, health, power)
++ command(): str
++ combat_style(): str
+}
+Undead <|-- CursedUndead
+class SkeletonWarrior {
++ MIN_HEALTH = 10
++ MAX_HEALTH = 90
++ MIN_POWER = 10
++ MAX_POWER = 70
++ __init__(id, name, health, power)
++ command(): str
+}
+WarriorUndead <|-- SkeletonWarrior
+class PhantomGuardian {
++ MIN_HEALTH = 30
++ MAX_HEALTH = 140
++ MIN_POWER = 20
++ MAX_POWER = 100
++ __init__(id, name, health, power)
+}
+WarriorUndead <|-- PhantomGuardian
+class VengefulGhost {
++ MIN_HEALTH = 10
++ MAX_HEALTH = 80
++ MIN_POWER = 20
++ MAX_POWER = 110
++ __init__(id, name, health, power)
++ command(): str
+}
+CursedUndead <|-- VengefulGhost
+class PutridZombie {
++ MIN_HEALTH = 20
++ MAX_HEALTH = 100
++ MIN_POWER = 5
++ MAX_POWER = 60
++ __init__(id, name, health, power)
+}
+Undead <|-- PutridZombie
+class DeathKnight {
++ MIN_HEALTH = 30
++ MAX_HEALTH = 200
++ MIN_POWER = 30
++ MAX_POWER = 160
++ HEALTH_PER_LEVEL = 20
++ POWER_PER_LEVEL = 10
++ STARTING_HEALTH = 100
++ STARTING_POWER = 80
++ __init__(id, name='Death Knight', health=None, power=None)
++ combat_style()
++ compare_combat_styles()
++ command()
+}
+WarriorUndead <|-- DeathKnight
+CursedUndead <|-- DeathKnight
+Necromancer "1" *-- "1" ResourceManager: creates and owns
+ResourceManager "1" *-- "5" Resource: creates and owns
+Necromancer "1" o-- "0..10" Undead: controls
+Necromancer ..> SummoningRitual: uses
+SummoningRitual ..> ResourceManager: checks and spends
+SummoningRitual ..> Undead: creates concrete subtype
+@enduml

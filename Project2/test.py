@@ -1,6 +1,14 @@
 from resource import Resource, ResourceManager
 from ritual import SummoningRitual
-from undead import Undead
+from undead import (
+    CursedUndead,
+    PhantomGuardian,
+    PutridZombie,
+    SkeletonWarrior,
+    Undead,
+    VengefulGhost,
+    WarriorUndead
+)
 
 
 def test_resource():
@@ -348,14 +356,123 @@ def test_ritual():
     print("SummoningRitual tests passed.")
 
 
+def test_undead_hierarchy():
+    print("Testing the specialised undead hierarchy...")
+
+    # Common state is initialised by Undead through super()
+    skeleton = SkeletonWarrior(1, "Skeleton Warrior", 50, 30)
+
+    assert isinstance(skeleton, Undead)
+    assert isinstance(skeleton, WarriorUndead)
+    assert skeleton.id == 1
+    assert skeleton.name == "Skeleton Warrior"
+    assert skeleton.health == 50
+    assert skeleton.power == 30
+    assert skeleton.level == 1
+
+    # Every summon keeps its own stat boundaries
+    assert skeleton.MIN_HEALTH == 10
+    assert skeleton.MAX_HEALTH == 90
+    assert skeleton.MAX_POWER == 70
+
+    # Stats outside the specialised boundaries are clamped
+    weak = SkeletonWarrior(2, "Frail Skeleton", 1, 100)
+
+    assert weak.health == SkeletonWarrior.MIN_HEALTH
+    assert weak.power == SkeletonWarrior.MAX_POWER
+
+    # Each summon sits under the correct parent
+    assert isinstance(
+        PhantomGuardian(3, "Phantom Guardian", 90, 70),
+        WarriorUndead
+    )
+    assert isinstance(
+        VengefulGhost(4, "Vengeful Ghost", 40, 45),
+        CursedUndead
+    )
+
+    zombie = PutridZombie(5, "Putrid Zombie", 70, 25)
+
+    assert isinstance(zombie, Undead)
+    assert not isinstance(zombie, WarriorUndead)
+    assert not isinstance(zombie, CursedUndead)
+
+    # command() retains the parent behaviour through super()
+    assert "awaits your command" in skeleton.command()
+    assert "grips its weapon" in skeleton.command()
+    assert "bones clatter" in skeleton.command()
+
+    # Overridden behaviour differs between summon types
+    assert skeleton.command() != zombie.command()
+    assert "Dark energy" not in zombie.command()
+    assert "Dark energy" in VengefulGhost(6, "Ghost", 40, 45).command()
+
+    # Inherited levelling uses the specialised boundaries
+    guardian = PhantomGuardian(7, "Phantom Guardian", 95, 95)
+
+    guardian.level_up()
+    guardian.level_up()
+
+    assert guardian.level == 3
+    assert guardian.health == 115
+    assert guardian.health > Undead.MAX_HEALTH
+    assert guardian.power == PhantomGuardian.MAX_POWER
+
+    # Rituals create the declared specialised class
+    ritual = SummoningRitual(
+        "Phantom Guardian Ritual",
+        "Phantom Guardian",
+        90,
+        70,
+        {
+            "necrotic_runes": 4,
+            "spirit_runes": 5,
+            "bone_runes": 3,
+            "flesh_runes": 0,
+            "ectoplasm": 6
+        },
+        summon_class=PhantomGuardian
+    )
+
+    assert ritual.summon_class is PhantomGuardian
+
+    summon = ritual.create_summon(100)
+
+    assert isinstance(summon, PhantomGuardian)
+    assert isinstance(summon, Undead)
+    assert type(summon).__name__ == "PhantomGuardian"
+    assert summon.id == 100
+    assert summon.name == "Phantom Guardian"
+    assert summon.health == 90
+    assert summon.power == 70
+    assert summon.level == 1
+
+    # Invalid summon classes fall back to the general Undead class
+    fallback = SummoningRitual(
+        "Unknown Ritual",
+        "Unknown",
+        10,
+        10,
+        {"ectoplasm": 1},
+        summon_class="not a class"
+    )
+
+    assert fallback.summon_class is Undead
+    assert type(fallback.create_summon(101)) is Undead
+
+    print("Undead hierarchy tests passed.")
+
+
 def run_tests():
     test_resource()
     test_resource_manager()
     test_undead()
+    test_undead_hierarchy()
     test_ritual()
 
     print()
     print("All tests passed!")
 
 
-run_tests()
+if __name__ == "__main__":
+    run_tests()

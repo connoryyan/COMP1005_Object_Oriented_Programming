@@ -1,29 +1,27 @@
-from __future__ import annotations
-
-
 class Transaction:
     '''
     Models a financial transaction on an account.
 
-    A Transaction can be created in two ways. It can be created as a pending
-    operation and later processed or cancelled through process() and cancel().
+    A Transaction can be created in two ways. It can be created as a
+        pending
+    operation and later processed or cancelled through process() and
+        cancel().
     It can also be created by an Account after a successful deposit or
     withdrawal, in which case it is a completed record that additionally
     stores the resulting balance (composition between Account and
     Transaction).
 
-    All attributes are private. Identifiers and fixed values are exposed
-    through read-only properties; the description has a property setter; and
-    the status changes only through process() and cancel().
-
     Attributes:
         __id (int): The transaction's unique identifier.
-        __type (str): The type of the transaction (e.g. Deposit, Withdrawal or
+        __type (str): The type of the transaction (e.g. Deposit,
+            Withdrawal or
             Transfer).
-        __amount (float): The amount of money involved in the transaction.
+        __amount (float): The amount of money involved in the
+            transaction.
         __description (str): A description of the transaction.
         __status (str): The current status of the transaction.
-        __resulting_balance (float): The balance after the operation, set for
+        __resulting_balance (float): The balance after the operation,
+            set for
             records created by Account.
     '''
 
@@ -145,7 +143,8 @@ class Transaction:
         Process a pending transaction.
 
         Returns:
-            bool: True if the transaction was processed, False otherwise.
+            bool: True if the transaction was processed, False
+                otherwise.
         '''
         if self.__status == "Cancelled":
             print("[INFO] The transaction cannot be completed.")
@@ -159,12 +158,16 @@ class Transaction:
         print("[INFO] Transaction successful.")
         return True
 
-    def cancel(self) -> None:
+    def cancel(self) -> bool:
         '''
         Cancel a pending transaction.
         '''
+        if self.__status != "Pending":
+            print("[INFO] Only pending transactions can be cancelled.")
+            return False
         self.__status = "Cancelled"
         print("[INFO] Transaction cancelled.")
+        return True
 
     def __str__(self) -> str:
         '''
